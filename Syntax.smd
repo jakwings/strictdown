@@ -1,0 +1,1717 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ * ~
+<h1 style="text-align:center">Strictdown Syntax</h1>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TL;DR. You'd better forget Markdown before reading this document.
+
+Strictdown was created to be easy to write, and still readable in plain text
+format, with a strict and powerful syntax. It is as simple as [Markdown]:[] but
+not as complicated as [reStructuredText]:[].
+
+  :[Markdown]: http://daringfireball.net/projects/markdown/syntax
+  :[reStructuredText]: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
+
+Below are details of all available elements that can be used in a Strictdown
+text. You can left click the outputs to view their HTML code, then left click
+again to restore them.
+
+Here are two important suggestions for you to use Strictdown:
+
+  1. Write with a good indentation style.
+  2. Keep it simple and don't panic.
+
+If you keep these suggestions in mind, you don't need to remember all the
+syntax details.
+
+For a quick reference, see: "[Quick Reference]:(QuickReference.html)".
+
+Or try the [live demo]:(demo.html).
+
+<[toc <h2>Contents</h2>]>
+
+
+Source Text Formatting
+======================
+
+  Structures
+  ----------
+
+    The document consists of two types of elements, block-level elements and
+    span-level elements:
+
+      * Block-level elements define the main structure of the content, for
+        example, what part of the text should be a paragraph, a list,
+        a blockquote and so on.
+
+      * Span-level elements mark up small text parts as, for example, emphasized
+        text or a link.
+
+    Thus span-level elements can only occur inside block-level elements or other
+    span-level elements.
+
+    You will often find references to the "first column" or "first character" of
+    a line in a block-level element descriptions. Such a reference is always to
+    be taken relative to the current indentation level because some block-level
+    elements open up a new indentation level (e.g. blockquotes). The beginning
+    of a Strictdown document opens up the default indentation level which begins
+    at the first column of the text.
+
+  Linebreaks
+  ----------
+
+    As we know, Windows OS uses CRLF to represent a linebreak, Old Mac OS uses
+    CR, Linux OS and modern Mac OS uses LF. For convenience, all CRLFs and CRs
+    will be replaced with LFs before parsing.
+
+  Character Escaping
+  ------------------
+
+    Since Strictdown uses some characters to mark up the text, there needs to
+    be a way to escape these special characters so that they can have their
+    normal meaning. This can be done by using backslash escapes. For example,
+    you can use a literal backtick `\`` like this:
+
+    ~~~ strictdown
+    This \`is not literal\` text!
+    ~~~
+
+    Following is a list of all the characters (character sequences) that can be
+    escaped:
+
+    ~~~
+    \ backslash
+    + plus sign
+    - dash (minus sign)
+    * asterisk
+    _ underscore
+    = equal sign
+    ~ tilde
+    " double quote
+    : colon
+    . period
+    ^ caret
+    | pipe
+    & ampersand
+    @ at sign
+    # hash (sharp)
+    ` backtick (back quote)
+    () left or right parentheses
+    [] left or right square brackets
+    {} left or right curly brackets
+    <> left or right angle brackets
+    ~~~
+
+  Spaces
+  ------
+
+    Space (U+0020) is the only character that can be used to represent
+    syntactic indentations.
+
+    When parsing |block-level| elements, all unnecessary trailing spaces will be
+    ignored and they won't affect the syntax matching. So, don't worry about the
+    spaces mistakenly added to any line of your source code.
+
+    Apart from the characters above, spaces can be escaped, too. If a space is
+    escaped under normal circumstances, it will become an `&nbsp;`. Otherwise,
+    it will be kept as is and the backslash will be ignored, i.e. "`\\ `" will
+    become "` `".
+
+  Block Boundaries
+  ----------------
+
+    Normally |block-level| elements must be separated by {blank lines} -- lines
+    that contain no character or just spaces. But some of the same type can be
+    put together for a compact style. Under special circumstances blank lines
+    may be not enough to separate them, then you must use |block dividers|.
+
+
+{Block-level} Elements -- Structural Elements
+=============================================
+
+  Paragraphs
+  ----------
+
+    Consecutive lines of text are considered to be one paragraph, because you
+    can use "{lazy syntax}" -- hard-wrap the text with linebreaks. Multiple
+    lines will be trimed first -- all leading and trailing spaces are removed,
+    then joined with a space by default (This behavior can be changed by
+    setting the options of the converter.). Any leading or trailing spaces will
+    be stripped from every line.
+
+    Any text block that doesn't match the syntax of other |block-level|
+    elements will be treated as a paragraph, too.
+
+    Input:
+
+      ~~~ strictdown
+      The first paragraph.
+
+      The second paragraph
+      using lazy syntax.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>The first paragraph.</p>
+      <p>The second paragraph using lazy syntax.</p>
+      ~~~
+
+    If you want to keep a trailing space, just escape it by prepending
+    a backslash `\\` to it.
+
+    Input:
+
+      ~~~ **strictdown
+      <pre class="lang-strictdown">The first paragraph.\\` `</pre>
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>The first paragraph.&nbsp;</p>
+      ~~~
+
+  Headings
+  --------
+
+    Strictdown supports Setext style headings and atx style headings. Both of
+    them allow |lazy syntax|.
+
+    A Setext style heading consists of the title, and a line with only one or
+    more consecutive equal signs (for a first level heading) or dashes (for
+    a second level heading) beginning at the first column.
+
+    Input:
+
+      ~~~ strictdown
+      First level heading
+      ===================
+
+      Second level heading
+      --------------------
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <h1 id="smd-heading-1">First level heading</h1>
+      <h2 id="smd-heading-2">Second level heading</h2>
+      ~~~
+
+    A atx style heading begins with one or more hash characters and then the title. The number of hash characters specifies the heading level: one hash character gives you a first level heading, two a second level heading and so on until the maximum of six hash characters for a sixth level heading. You may optionally use any number of hashes at the end of the line to close the heading. Any leading or trailing spaces will be stripped from the title.
+
+    Input:
+
+      ~~~ strictdown
+      # H1 heading ####
+
+      ## H2 heading ###
+
+      ### H3 heading ##
+
+      #### H4 heading #
+
+      ##### H5 heading
+
+      ###### H6 heading
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <h1 id="smd-heading-1">H1 heading</h1>
+      <h2 id="smd-heading-2">H2 heading</h2>
+      <h3 id="smd-heading-3">H3 heading</h3>
+      <h4 id="smd-heading-4">H4 heading</h4>
+      <h5 id="smd-heading-5">H5 heading</h5>
+      <h6 id="smd-heading-6">H6 heading</h6>
+      ~~~
+
+  {Table of Contents}
+  -------------------
+
+    You can insert a table of contents, i.e. a list of top-level headings,
+    using a line containing only `<[toc]>` anywhere.
+
+    Input:
+
+      ~~~ strictdown
+      <[toc]>
+
+      # H1
+
+      ## H2
+
+      ### H3
+
+      # H1
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <div id="smd-contents">
+        <ul>
+          <li><a href="#smd-heading-1">H1</a>
+            <ul>
+              <li><a href="#smd-heading-2">H2</a>
+                <ul>
+                  <li><a href="#smd-heading-3">H3</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="#smd-heading-4">H1</a></li>
+        </ul>
+      </div>
+      <h2 id="smd-heading-1">H1</h2>
+      <h3 id="smd-heading-2">H2</h3>
+      <h4 id="smd-heading-3">H3</h4>
+      <h2 id="smd-heading-4">H1</h2>
+      ~~~
+
+    You can also specify a title for TOC by appending at least one space and
+    the title to `<[toc`. |Lazy syntax| is allowed and all leading and trailing
+    spaces will be stripped from the title.
+
+    Input:
+
+      ~~~ strictdown
+      <[toc Contents:]>
+
+      # H1
+
+      ## H2
+
+      ### H3
+
+      # H1
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <div id="smd-contents">
+        <div class="smd-contents-title">Contents:</div>
+        <ul>
+          <li><a href="#smd-heading-1">H1</a>
+            <ul>
+              <li><a href="#smd-heading-2">H2</a>
+                <ul>
+                  <li><a href="#smd-heading-3">H3</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="#smd-heading-4">H1</a></li>
+        </ul>
+      </div>
+      <h2 id="smd-heading-1">H1</h2>
+      <h3 id="smd-heading-2">H2</h3>
+      <h4 id="smd-heading-3">H3</h4>
+      <h2 id="smd-heading-4">H1</h2>
+      ~~~
+
+  Blockquotes
+  -----------
+
+    A blockquote begins with a right angle bracket. All following lines that
+    also begin with a right angle bracket, optionally separated by |blank
+    lines|, belong to the blockquote. You can use any |block-level| element
+    inside a blockquote. And the inner elements can be indented with any number
+    of spaces. No indentation is needed for |blank lines|.
+
+    Input:
+
+      ~~~ strictdown
+      > # Heading
+      >
+      > A paragraph.
+
+      > > Nested blockquote are
+      > > also possible.
+
+      > Another paragraph.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <blockquote>
+        <h2>Heading</h2>
+        <p>A paragraph.</p>
+        <blockquote>
+          <p>Nested blockquote are also possible.</p>
+        </blockquote>
+        <p>Another paragraph.</p>
+      </blockquote>
+      ~~~
+
+    If you just want to wrap |simple code blocks| into the blockquote, you must
+    use |blank lines| before the code block to help Strictdown to decide the
+    indentation.
+
+    Input:
+
+      ~~~ **strictdown
+      <pre class="lang-strictdown">\>` `
+      \>`     `some code here
+
+      \>
+      \>`    `some code here</pre>
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <blockquote>
+        <pre>some code here</pre>
+        <pre>some code here</pre>
+      </blockquote>
+      ~~~
+
+  {Simple Code Blocks}
+  --------------------
+
+    A simple code block consist of blank lines and lines indented with four spaces.
+
+    Input:
+
+      ~~~ **strictdown
+      <pre class="lang-strictdown">`    `while (coding) \{
+      `    `    write(0xDEADBEEF);
+      `    `\}
+
+      `    `// Code can be separated by blank lines.</pre>
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <pre>while (coding) {
+          write(0xDEADBEEF);
+      }
+
+      // Code can be separated by blank lines.</pre>
+      ~~~
+
+  Fenced Code Blocks
+  ------------------
+
+    Fenced code blocks are much more powerful than |simple code blocks|. You do
+    not need to indent the content with spaces, but just surround the code with
+    three or more tildes which are called fences. Fences must start at the
+    first column, and the closing fence must have at least as many tildes as
+    the openning fence.  All blank lines between the fences will be preserved.
+
+    Input:
+
+      ~~~~~~ strictdown
+      ~~~~
+      while (coding) {
+          write(0xDEADBEEF);
+      }
+
+      Ending lines must have at least as
+      many tildes as the openning fence.
+      ~~~
+
+      // Empty lines are preserved.
+
+      ~~~~~
+      ~~~~~~
+
+    Output:
+
+      ~~~~~~ html
+      <pre>while (coding) {
+          write(0xDEADBEEF);
+      }
+
+      Ending lines must have at least as
+      many tildes as the openning fence.
+      ~~~
+
+      // Empty lines are preserved.
+
+      </pre>
+      ~~~~~~
+
+    You can also specify the language of the code:
+
+    Input:
+
+      ~~~~~~ strictdown
+      ~~~ python
+      def foo():
+          print("Hello, world!")
+
+      foo()
+      ~~~
+      ~~~~~~
+
+    Output:
+
+      ~~~ html
+      <pre class="lang-python">def foo():
+          print(&quot;Hello, world!&quot;)
+
+      foo()</pre>
+      ~~~
+
+    Strictdown has further extended the syntax of fenced code blocks. You can
+    directly insert raw HTML code into the document by prefixing the language
+    name with an asterisk.
+
+    Input:
+
+      ~~~~~~ strictdown
+      ~~~ *html
+      <h1>This is a H1 heading.</h1>
+      <p>This is a paragraph.</p>
+      ~~~
+      ~~~~~~
+
+    Output:
+
+      ~~~ html
+      <h1>This is a H1 heading.</h1>
+      <p>This is a paragraph.</p>
+      ~~~
+
+    If you want to use |span-level| elements in raw HTML code, just prepend
+    at least two asterisks to the language name.
+
+    Input:
+
+      ~~~~~~ strictdown
+      ~~~ **html
+      <p>This is a __paragraph__.</p>
+      ~~~
+      ~~~~~~
+
+    Output:
+
+      ~~~ html
+      <p>This is a <i>paragraph</i>.</p>
+      ~~~
+
+    In fact, the closing fence is optional. If there is no closing fence for
+    the openning fence, all following lines in the same indentation level
+    belong to the code block.
+
+    Input:
+
+      ~~~ strictdown
+      > ~~~
+      > some code
+      >
+      > still code
+
+      A normal paragraph.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <blockquote>
+      <pre>some code
+
+      still code</pre>
+      </blockquote>
+      <p>A normal paragraph.</p>
+      ~~~
+
+  Horizontal Rules
+  ----------------
+
+    A horizontal rule consists of three or more asterisks or dashes (they can
+    not be mixed), optionally separated by spaces.
+
+    Input:
+
+      ~~~ strictdown
+      * * *
+
+      ---
+
+      - -  -   -     -
+
+      ----------------
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <hr>
+      <hr>
+      <hr>
+      <hr>
+      ~~~
+
+  Ordered Lists & Unordered Lists
+  -------------------------------
+
+    Strictdown supports ordered and unordered lists. Ordered lists are started
+    by using a number followed by a period, a space and then the list item
+    text.  All the following lines which are in the same indentation level with
+    the list marker belong to the list item. List markers (number, period, and
+    space) must start at the first column. You can use any natural number in
+    any order for the list
+    markers.
+
+    Input:
+
+      ~~~ strictdown
+      1. First list item
+
+      2. Second list item
+      0. Third list item
+         using lazy syntax.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <ol>
+        <li>First list item</li>
+        <li>Second list item</li>
+        <li>Third list item using lazy syntax.</li>
+      </ol>
+      ~~~
+
+    As the {list item} can contain |block-level| elements, you can create nested
+    lists. The nested elements must be indented based on the indentation level
+    of the list item (the list marker are treated as spaces). And the text
+    right after the list marker is taken as a paragraph and can be indented
+    with over four spaces by default.
+
+    Input:
+
+      ~~~ strictdown
+      1. item one
+
+         1. sub item one
+         2. sub item two
+         3. sub item three
+
+      2. item two
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <ol>
+        <li>
+          <p>item one</p>
+          <ol>
+            <li>sub item one</li>
+            <li>sub item two</li>
+            <li>sub item three</li>
+          </ol>
+        </li>
+        <li>
+          <p>item two</p>
+        </li>
+      </ol>
+      ~~~
+
+    If you want to use a |block-level| element as the first child of the list
+    item, just leave nothing after the list marker, then nest the element.
+    Besides, if one of the list item contains |block-level| elements, all
+    simple list item in the same list will become paragraphs.
+
+    Input:
+
+      ~~~ **strictdown
+      <pre class="lang-strictdown">1.` `
+
+      `   `A paragraph here.
+
+      2. Another paragraph.</pre>
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <ol>
+        <li>
+          <p>A paragraph here.</p>
+        </li>
+        <li>
+          <p>Ok</p>
+        </li>
+      </ol>
+      ~~~
+
+    Unordered lists are started by using an asterisk, a dash or a plus sign
+    (they can be mixed) and a space. Apart from that unordered lists follow the
+    same rules as ordered lists.
+
+    Input:
+
+      ~~~ strictdown
+      - item one
+
+        + sub item one
+        * sub item two
+
+      + item two
+
+      + item three
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <ul>
+        <li>
+          <p>item one</p>
+          <ul>
+            <li>sub item one</li>
+            <li>sub item two</li>
+          </ul>
+        </li>
+        <li>
+          <p>item two</p>
+        </li>
+        <li>
+          <p>item three</p>
+        </li>
+      </ul>
+      ~~~
+
+  Definition Lists
+  ----------------
+
+    A definition list works similar to a normal list and is used to associate
+    definition with terms.  Definition lists are started when a normal
+    paragraph is followed by a line starting with a colon and a space (list
+    marker), and then the definition text.  One term can have many definitions
+    and multiple terms can have the same definition. Each line of the preceding
+    paragraph is assumed to contain one term.
+
+    Every line of the paragraph is taken as a term. Terms can not begin with
+    a space nor a colon.
+
+    Definitions can be separated by |blank lines|. But you must separated the
+    next term and the previous definition text with |blank lines|.
+
+    Input:
+
+      ~~~ strictdown
+      term one
+      : definition
+      : another definition
+
+      : the third definition
+
+      term two
+      term three
+      : definition
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <dl>
+        <dt>term one</dt>
+        <dd>definition</dd>
+        <dd>another definition</dd>
+        <dd>the third definition</dd>
+        <dt>term two</dt>
+        <dt>term three</dt>
+        <dd>definition</dd>
+      </dl>
+      ~~~
+
+    Definitions can contain |block-level| elements, too, and behave like the
+    normal |list item|.
+
+    Input:
+
+      ~~~ **strictdown
+      <pre class="lang-strictdown">This is a term
+      : a paragraph
+
+        \> a blockquote
+
+      This is another term
+      :` `
+
+      `  `\> The first child element is usually treated as
+      `  `\> a paragraph. So you must start with a blank
+      `  `\> line.</pre>
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <dl>
+        <dt>This is a term</dt>
+        <dd>
+          <p>a paragraph</p>
+          <blockquote>
+            <p>a blockquote</p>
+          </blockquote>
+        </dd>
+        <dt>This is another term</dt>
+        <dd>
+          <blockquote>
+            <p>The first child element is usually treated as a paragraph. So you must start with a blank line.</p>
+          </blockquote>
+        </dd>
+      </dl>
+      ~~~
+
+  Tables
+  ------
+
+    Strictdown supports a syntax for creating simple or complex tables.  A table
+    consists of one optional header (`<thead>`), one or multiple bodies
+    (`<tbody>`), and one optional footer (`<tfoot>`).
+
+    Table cells on the same row are divided by a pipe `|` or a caret `^`, and
+    surrounded by a pipe or a caret. Table bodies is divided by lines of dashes
+    surrounded by a pipe or a caret. The four outer corners must use plus signs
+    instead of pipes or carets. If you want to use pipes or carets in a cell,
+    escape it with a backslash.
+
+    It it unnecessary to align the table cell dividers, but the left border of
+    the table must start at the first column.
+    
+    Below is a simple table with two table bodies. You can align the content of
+    table cells, too. Just add at least two whitespaces at the opposite end of
+    your text: Add two spaces on the left to align right, two spaces on the
+    right to align left and two spaces at least at both ends for centered text.
+    The content of table cells are left aligned by default.
+
+    Input:
+
+      ~~~ strictdown
+      +--------------------------------------------+
+      |        right |    center    | left         |
+      | left         |        right |    center    |
+      |--------------------------------------------|
+      | xxxxxxxxxxxx | xxxxxxxxxxxx | xxxxxxxxxxxx |
+      +--------------------------------------------+
+
+      The same table:
+
+      +-+
+      |  right|  center  |left  |
+      |left  |  right|  center  |
+      |-|
+      |xxxxxxxxxxxx|xxxxxxxxxxxx|xxxxxxxxxxxx|
+      +-+
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <table>
+        <tbody>
+          <tr>
+            <td style="text-align:right;">right</td>
+            <td style="text-align:center;">center</td>
+            <td style="text-align:left;">left</td>
+          </tr>
+          <tr>
+            <td style="text-align:left;">left</td>
+            <td style="text-align:right;">right</td>
+            <td style="text-align:center;">center</td>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr>
+            <td style="text-align:left;">xxxxxxxxxxxx</td>
+            <td style="text-align:left;">xxxxxxxxxxxx</td>
+            <td style="text-align:left;">xxxxxxxxxxxx</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>The same table:</p>
+      <table>
+        <tbody>
+          <tr>
+            <td style="text-align:right;">right</td>
+            <td style="text-align:center;">center</td>
+            <td style="text-align:left;">left</td>
+          </tr>
+          <tr>
+            <td style="text-align:left;">left</td>
+            <td style="text-align:right;">right</td>
+            <td style="text-align:center;">center</td>
+          </tr>
+        </tbody>
+        <tbody>
+          <tr>
+            <td style="text-align:left;">xxxxxxxxxxxx</td>
+            <td style="text-align:left;">xxxxxxxxxxxx</td>
+            <td style="text-align:left;">xxxxxxxxxxxx</td>
+          </tr>
+        </tbody>
+      </table>
+      ~~~
+
+    You can use a caret sign to denote a header cell:
+
+    Input:
+
+      ~~~ strictdown
+      +-----------------------------------------+
+      ^ Negative  ^ Characteristic  ^ Positive  |
+      | Sad       ^ Mood            | Happy     |
+      | Failing   ^ Grade           | Passing   |
+      +-----------------------------------------+
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <table>
+        <tbody>
+          <tr>
+            <th style="text-align:left;">Negative</th>
+            <th style="text-align:left;">Characteristic</th>
+            <th style="text-align:left;">Positive</th>
+          </tr>
+          <tr>
+            <td style="text-align:left;">Sad</td>
+            <th style="text-align:left;">Mood</th>
+            <td style="text-align:left;">Happy</td>
+          </tr>
+          <tr>
+            <td style="text-align:left;">Failing</td>
+            <th style="text-align:left;">Grade</th>
+            <td style="text-align:left;">Passing</td>
+          </tr>
+        </tbody>
+      </table>
+      ~~~
+
+    Below is a table with a table header and a table footer. You can use equal
+    signs instead of dashes for the top border to indicate the start of a table
+    header. The table header must be ended by a line of equal signs surrounded
+    by a pipe or a caret. The table footer is started by a line of equal signs
+    surrounded by a pipe or a caret.
+
+    Input:
+
+      ~~~ strictdown
+      +========================================+
+      |     Languages |  English  |  Japanese  |
+      |========================================|
+      ^        Test 1 |    80     |     92     |
+      ^        Test 2 |    85     |     73     |
+      ^        Test 3 |    82     |     88     |
+      |========================================|
+      |  Total Scores |    247    |     253    |
+      |       Average |    82.3   |     84.3   |
+      +----------------------------------------+
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <table>
+        <thead>
+          <tr>
+            <td style="text-align:right;">Languages</td>
+            <td style="text-align:center;">English</td>
+            <td style="text-align:center;">Japanese</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th style="text-align:right;">Test 1</th>
+            <td style="text-align:center;">80</td>
+            <td style="text-align:center;">92</td>
+          </tr>
+          <tr>
+            <th style="text-align:right;">Test 2</th>
+            <td style="text-align:center;">85</td>
+            <td style="text-align:center;">73</td>
+          </tr>
+          <tr>
+            <th style="text-align:right;">Test 3</th>
+            <td style="text-align:center;">82</td>
+            <td style="text-align:center;">88</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td style="text-align:right;">Total Scores</td>
+            <td style="text-align:center;">247</td>
+            <td style="text-align:center;">253</td>
+          </tr>
+          <tr>
+            <td style="text-align:right;">Average</td>
+            <td style="text-align:center;">82.3</td>
+            <td style="text-align:center;">84.3</td>
+          </tr>
+        </tfoot>
+      </table>
+      ~~~
+
+    You can use "`:::`" or combine multiple "`|`" to make spanning of rows or columns:
+
+    Input:
+
+      ~~~ strictdown
+      +------------------------------------------------+
+      |  Table Body Content              ||  Column 3  |
+      |  :::                             ||  Column 3  |
+      |  Table Body Content              ||  Column 3  |
+      |  Table Body Content  |  Column 2  |  :::       |
+      +------------------------------------------------+
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <table>
+        <tbody>
+          <tr>
+            <td colspan="2" rowspan="2" style="text-align:center;">Table Body Content</td>
+            <td style="text-align:center;">Column 3</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;">Column 3</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="text-align:center;">Table Body Content</td>
+            <td rowspan="2" style="text-align:center;">Column 3</td>
+          </tr>
+          <tr>
+            <td style="text-align:center;">Table Body Content</td>
+            <td style="text-align:center;">Column 2</td>
+          </tr>
+        </tbody>
+      </table>
+      ~~~
+
+  Images
+  ------
+
+    Although there are "image" type |span-level| elements, you can insert an image without wrapping it with a paragraph.
+
+    An image is represented by alternative text wrapped in a pair of square
+    brackets `[]` beginning at the first column, then an at sign `@`, followed
+    by some image information wrapped in a pair of angle brackets `<>`.
+
+    The {image information} must begin with the URI. Other information in order
+    includes the image size, the ":left" or ":right" floating attribute, the
+    image title. Different part of the information can be separated by spaces,
+    or a linebreak and at least one space.
+    
+    The image size, i.e. the width and height, is separated by a comma. If both
+    the image size and the floating attribute are specified, the floating
+    attribute must stick with the image size. The width or height can not
+    contain any of these characters: ` `, `"`, `'`, `,`, `:`, `&`, `;`, or
+    a linebreak.
+    
+    The image title must be wrapped in two double quotes, and if you want to
+    use a double quote or backslash, please escape it with a backslash.
+
+    Input:
+
+      ~~~ strictdown
+      Some images:
+
+      [alternative text]@<http://example.com/image1.png>
+      [alternative text]@<http://example.com/image2.png "title">
+      [alternative text]@<http://example.com/image3.png 100px,auto>
+      [alternative text]@<http://example.com/image4.png 100px,auto:left>
+      [alternative text]@<http://example.com/image5.png :right>
+
+      [alternative text]@<https://avatars0.githubusercontent.com/u/1451509?s=160
+                          100px,auto:left
+                          "My Avatar">
+
+      A paragraph.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>Some images:</p>
+      <img src="http://example.com/image1.png" alt="alternative text">
+      <img src="http://example.com/image2.png" alt="alternative text" title="title">
+      <img src="http://example.com/image3.png" alt="alternative text" style="width:100px;height:auto;">
+      <img src="http://example.com/image4.png" alt="alternative text" style="float:left;width:100px;height:auto;">
+      <img src="http://example.com/image5.png" alt="alternative text" style="float:right;">
+      <img src="https://avatars0.githubusercontent.com/u/1451509?s=160" alt="alternative text" title="My Avatar" style="float:left;width:100px;height:auto;">
+      <p>A paragraph.</p>
+      ~~~
+
+
+{Span-level} Elements -- Text Modifiers
+=======================================
+
+  When matching span-level elements, the syntax is not "greedy", and it will
+  stop pattern matching once the text is matched.
+
+  Linebreaks
+  ----------
+
+    You can manually insert a `<br>` by placing a single backslash at the end
+    of a line.
+
+    Input:
+
+      ~~~ strictdown
+      The first line of my poem.\
+      THe second line of my poem.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>The first line of my poem.<br>
+      THe second line of my poem.</p>
+      ~~~
+
+  Emphasis
+  --------
+
+    Emphasis can be added to text by surrounding the text with double
+    underscores. Spaces are not allowed at the inner sides of double
+    underscores.
+
+    Input:
+
+      ~~~ strictdown
+      This is __emphasized__, and this is partial__ly__ emphasized.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>This is <i>emphasized</i>, and this is partial<i>ly</i> emphasized.</p>
+      ~~~
+
+  Strong Emphasis
+  ---------------
+
+    Strong emphasis can be added to text by surrounding the text with double
+    asterisks. Spaces are not allowed at the inner sides of double asterisks.
+
+    Input:
+
+      ~~~ strictdown
+      This is **strongly** emphasized, and this is partial**ly** emphasized.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>This is <b>strongly</b> emphasized, and this is partial<b>ly</b> emphasized.</p>
+      ~~~
+
+  Deletions
+  ---------
+
+    Text can have a deletion effect by surrounding the text with double tildes.
+    Spaces are not allowed at the inner sides of double tildes.
+
+    Input:
+
+      ~~~ strictdown
+      ~~This sentence is no longer true.~~ Please ~~trust~~ ignore it.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p><del>This sentence is no longer true.</del> Please <del>trust</del> ignore it.</p>
+      ~~~
+
+  Literal Text
+  ------------
+
+    If you don't want the special characters to take effects, just surround it
+    by a backtick. Then only backticks or backslashes need to be escaped.
+
+    Input:
+
+      ~~~ strictdown
+      This is **not** `**bold**`.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>This is <b>not</b> <span class="smd-literal">**bold**</span>.</p>
+      ~~~
+
+  Code Snippets
+  -------------
+
+    Code snippets is similar to literal text, but use two or more backticks to
+    surround the text, and you can specify the language it uses in a pair of
+    parentheses right after the snippets (spaces are not allowed at the inner
+    sides of the parentheses).
+    
+    Code snippets must contain at least one character but not only backticks.
+    If you want to use only backticks in the snippet, use spaces to separate
+    the markers and make sure the markers have at least as many characters as
+    the backticks in the content.
+
+    Input:
+
+      ~~~ strictdown
+      Einstein's famous equation: ``E = mc^2``(latex)
+
+      Press ```Enter``` or `` ` `` to confirm your request.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>Einstein&#39;s famous equation: <code class="lang-latex">E = mc^2</code></p>
+      <p>Press <code>Enter</code> or <code> ` </code> to confirm your request.</p>
+      ~~~
+
+  Links & Images
+  --------------
+
+    A {link} can be created by surrounding the text with a pair of square
+    brackets (spaces are not allowed at the inner sides of brackets) and
+    a colon followed by a link URL in a pair of parentheses.
+
+    An image can be inserted by surrounding the text with a pair of square
+    brackets (spaces are not allowed at the inner sides of brackets) and an at
+    sign followed by a link URL in a pair of parentheses.
+
+    Input:
+
+      ~~~ strictdown
+      [My Avatar]@(https://avatars0.githubusercontent.com/u/1451509?s=32)
+
+      A [link]:(https://github.com/jakwings/strictdown) to my project.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p><img src="https://avatars0.githubusercontent.com/u/1451509?s=32" alt="My Avatar"></p>
+      <p>A <a class="smd-ref-link" href="https://github.com/jakwings/strictdown">link</a> to my project.</p>
+      ~~~
+
+    There is another way to create links or images which does not interrupt the
+    text flow a lot. The URL and title are defined using a reference name and
+    this reference name is then used in a pair of square brackets instead of
+    the link URL. Then you can have to define the reference elsewhere.
+    
+    A link definition is started with a colon, then the reference name in
+    a pair of square brackets, then a colon, followed by the URI and an
+    optional title wrapped in two double quotes. The reference name of link
+    definitions can not start with a caret, an asterisk, or an at sign, and can
+    not contain linebreaks or square brackets.  Multiple link definitions is
+    not necessary to be separated by |blank lines|.
+
+    An image definition is started with an at sign, then the reference name in
+    a pair of square brackets, then a colon, followed by the |image
+    information| without any wrapper.  Multiple image definitions is not
+    necessary to be separated by |blank lines|. The reference name is
+    case-insensitive and can not contain any linebreak or square bracket.
+    
+    The reference name is case-insensitive both for links and images.
+
+    Input:
+
+      ~~~ strictdown
+      [My Avatar]@[avatar]
+
+      A [link]:[project] to my project.
+
+      @[avatar]: https://avatars0.githubusercontent.com/u/1451509?s=160
+                 32px,32px "Nice to meet you."
+
+      :[project]: https://github.com/jakwings/strictdown
+                  "Welcome to fork!"
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p><img src="https://avatars0.githubusercontent.com/u/1451509?s=160" alt="My Avatar" title="Nice to meet you." style="width:32px;height:32px;"></p>
+      <p>A <a class="smd-ref-link" href="https://github.com/jakwings/strictdown" title="Welcome to fork!">link</a> to my project.</p>
+      ~~~
+
+    You can also omit the reference name and URL of the link, then a link
+    definition that has the linked text as its id will be applied.
+
+    Input:
+
+      ~~~ strictdown
+      A link to my [project]:[].
+
+      A link to my [project]:().
+
+      A link to my [project].
+
+      :[project]: https://github.com/jakwings/strictdown
+                  "Welcome to fork!"
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>A link to my <a class="smd-ref-link" href="https://github.com/jakwings/strictdown" title="Welcome to fork!">project</a>.</p>
+      <p>A link to my <a class="smd-ref-link" href="https://github.com/jakwings/strictdown" title="Welcome to fork!">project</a>.</p>
+      <p>A link to my <a class="smd-ref-link" href="https://github.com/jakwings/strictdown" title="Welcome to fork!">project</a>.</p>
+      ~~~
+
+  Footnotes
+  ---------
+
+    Footnotes can easily be used in Strictdown. Just set a footnote marker `^`
+    followed by a reference name in a pair of square brackets and somewhere
+    else the footnote definition (which basically looks like a reference link
+      definition).
+
+    |Lazy syntax| is allowed in the footnote definition, but the following
+    lines must start with at least one space. Multiple footnote definitions can
+    be put together. The reference name is case-insensitive and can not contain
+    any linebreak or square bracket.
+
+    Input:
+
+      ~~~ strictdown
+      This is a sentence with a footnote^[1].
+
+      ^[1]: And here is the definition,
+            using lazy syntax.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>This is a sentence with a footnote<a id="smd-ref-footnote-1" class="smd-ref-footnote" href="#smd-footnote-1"><sup>1</sup></a>.</p>
+      <div id="smd-footnotes">
+        <hr>
+        <table>
+          <tbody style="vertical-align:top;">
+            <tr class="smd-footnote" id="smd-footnote-1">
+              <td>[1]</td>
+              <td>And here is the definition. <em><a class="smd-footnote-backref" href="#smd-ref-footnote-1">&#8617;</a></em></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      ~~~
+
+    The footnote definition can contain any |block-level| element by leaving
+    optional spaces on the first line, then all following lines indented with
+    four spaces belong to the definition.
+
+    Input:
+
+      ~~~ **strictdown
+      <pre class="lang-strictdown">This is a sentence with a footnote^\[fun\].
+
+      ^\[fun\]:
+      `    `This is a paragraph.
+
+      `    `This is another paragraph.</pre>
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>This is a sentence with a footnote<a id="smd-ref-footnote-1" class="smd-ref-footnote" href="#smd-footnote-1"><sup>1</sup></a>.</p>
+      <div id="smd-footnotes">
+        <hr>
+        <table>
+          <tbody style="vertical-align:top;">
+            <tr class="smd-footnote" id="smd-footnote-1">
+              <td>[1]</td>
+              <td>
+                <p>This is a paragraph.</p>
+                <p>This is another paragraph.</p>
+                <p><em><a class="smd-footnote-backref" href="#smd-ref-footnote-1">&#8617;</a></em></p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      ~~~
+
+  Abbreviations
+  -------------
+
+    Abbreviations will work out of the box once you add an abbreviation
+    definition. So you can just write the text and add the definitions later
+    on.  Abbreviations are case-sensitive. The reference names of abbreviations
+    definitions can not contain any linebreak or square bracket.
+
+    Input:
+
+      ~~~ strictdown
+      Strictdown was used to write simple HTML documents easily.
+
+      *[HTML]: Hyper Text Markup Language
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>Strictdown was used to write simple <abbr title="Hyper Text Markup Language">HTML</abbr> documents easily.</p>
+      ~~~
+
+  Anchors & Inline References
+  ---------------------------
+
+    Any text can be marked up as an anchor by wrapping it by a pair of curly
+    brackets.  Then you can refer to it by the same text surrounded by a pipe.
+    The anchored text is case-insensitive. Spaces are not allowed at the inner
+    sides of the markers.
+
+    Input:
+
+      ~~~ strictdown
+      {A Title}
+      =========
+
+      A reference to |a title|.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <h2 id="smd-heading-1"><a class="smd-anchor" id="smd-anchor-a-title"></a>A Title</h2>
+      <p>A reference to <a class="smd-ref-anchor" href="#smd-anchor-a-title">a title</a>.</p>
+      ~~~
+
+  HTML Tags
+  ---------
+
+    Strictdown supports the insertion of valid raw HTML tags, including comment
+    tag "`<!-- comment -->`".  You can write openning tags or closing tags
+    without matched tags, since some HTML elements do not require closing tags.
+    But CDATA tag is not supported.
+
+    Input:
+
+      ~~~ strictdown
+      Roses are <span style="color:red">red</span> and <em>beautiful</em>.<!-- more -->
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>Roses are <span style="color:red">red</span> and <em>beautiful</em>.<!-- more --></p>
+      ~~~
+
+  Character References
+  --------------------
+
+    Strictdown also supports [character reference]:[] in the HTML way.
+
+      :[character reference]: https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references#Character_entity_references_in_HTML
+
+    Input:
+
+      ~~~ strictdown
+      Copyright &copy; 2014 Alice&Bob (MIT Licensed)
+
+      Google&trade; is a trademark.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>Copyright &copy; 2014 Alice&amp;Bob (MIT Licensed)</p>
+      <p>Google&trade; is a trademark.</p>
+      ~~~
+
+  Advanced Reference Links
+  ------------------------
+
+    Reference links are far more powerful than normal reference |links| we have
+    seen just now.  If the reference name of the link (not link definitions!)
+    begins with `@`, `^`, or `*`, it can refer to the URL and optionally the
+    title of the definition of an image, a footnote, or an anchor respectively.
+
+    Input:
+
+      ~~~ strictdown
+      {Animals} are cute.
+
+      [A link to an image.]:[@cats]
+
+      [A link to a footnote.]:[^dogs]
+
+      [A link to the anchor above.]:[*animals]
+
+      @[cats]: http://example.com/cats.png "My lovely cats."
+
+      ^[dogs]: I like dogs.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p><a class="smd-anchor" id="smd-anchor-animals"></a>Animals are cute.</p>
+      <p><a class="smd-ref-link" href="http://example.com/cats.png" title="My lovely cats.">A link to an image.</a></p>
+      <p><a class="smd-ref-link" href="#smd-footnote-1">A link to a footnote.</a></p>
+      <p><a class="smd-ref-link" href="#smd-anchor-animals" title="animals">A link to the anchor above.</a></p>
+      <div id="smd-footnotes">
+        <hr>
+        <table>
+          <tbody style="vertical-align:top;">
+            <tr class="smd-footnote" id="smd-footnote-1">
+              <td>[1]</td>
+              <td>I like dogs.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      ~~~
+
+  Automatic Links
+  ---------------
+
+    Automatic links are very similar to reference links, and they are created
+    by writing an URL, a reference name started with `@`, `^`, or `:`, or an
+    email address in a pair of double square brackets. Spaces are not allowed
+    at the inner sides of the brackets.
+
+    Input:
+
+      ~~~ strictdown
+      [[https://github.com]]
+
+      [[@cats]]
+
+      [[:dogs]]
+
+      [[^Dogs]] gives a text linked to the footnote.
+
+      [[email@example.com]]
+
+      :[dogs]: http://example.com/dogs.png "My brave dogs."
+
+      @[cats]: http://example.com/cats.png "My lovely cats."
+
+      ^[dogs]: I like dogs.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p><a class="smd-raw-link" href="https://github.com">https://github.com</a></p>
+      <p><a class="smd-raw-link" href="http://example.com/cats.png" title="My lovely cats.">http://example.com/cats.png</a></p>
+      <p><a class="smd-raw-link" href="http://example.com/dogs.png" title="My brave dogs.">http://example.com/dogs.png</a></p>
+      <p><a class="smd-ref-link" href="#smd-footnote-1">Dogs</a> gives a text linked to the footnote.</p>
+      <p><a class="smd-mail-link" href="mailto:&#101;&#109;&#97;&#105;&#108;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;">&#101;&#109;&#97;&#105;&#108;&#64;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#46;&#99;&#111;&#109;</a></p>
+      <div id="smd-footnotes">
+        <hr>
+        <table>
+          <tbody style="vertical-align:top;">
+            <tr class="smd-footnote" id="smd-footnote-1">
+              <td>[1]</td>
+              <td>I like dogs.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      ~~~
+
+
+Others
+======
+
+  Nested Span-level Elements
+  --------------------------
+
+    Span-level elements of different types can be nested. For example:
+
+    Input:
+
+      ~~~ strictdown
+      {[An anchor]:(https://github.com) with a link^[1]} is ok, too.
+
+      ^[1]: This is a reference to |an anchor with a link|.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p><a class="smd-anchor" id="smd-anchor-an-anchor-with-a-link"></a><a class="smd-ref-link" href="https://github.com">An anchor</a> with a link<a id="smd-ref-footnote-1" class="smd-ref-footnote" href="#smd-footnote-1"><sup>1</sup></a> is ok, too.</p>
+      <div id="smd-footnotes">
+        <hr>
+        <table>
+          <tbody style="vertical-align:top;">
+            <tr class="smd-footnote" id="smd-footnote-1">
+              <td>[1]</td>
+              <td>This is a reference to <a class="smd-ref-anchor" href="#smd-anchor-an-anchor-with-a-link">an anchor with a link</a>. <em><a class="smd-footnote-backref" href="#smd-ref-footnote-1">&#8617;</a></em></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      ~~~
+
+    When pattern-matching a reference name, all markers and non-printable text
+    will be filtered. So you can nest different elements more freely.
+
+  {Block Divider}
+  ---------------
+
+    The normal way to divide two blocks is to use blank lines -- empty lines or
+    lines that only have spaces.
+
+    But some elements of the same type of "image", "image definition",
+    "link defition", "footnote definition", "abbreviation definition",
+    "ordered or unordered list item", or "definition list item", can be put
+    together to have a compact style.
+
+    Due to the compact style of some elements introduced above, and the special
+    ways for some elements to contain |block-level| elements, Strictdown provide
+    the block divider for you to manually separate the elements.
+
+    Block divider consists of an caret in a single line, and is treated as
+    a block-level element, too.
+
+    Input:
+
+      ~~~ strictdown
+          a code block here
+
+      ^
+
+          another code block
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <pre>a code block here</pre>
+      <pre>another code block</pre>
+      ~~~
+
+    Input:
+
+      ~~~ strictdown
+      * item one
+      * item two
+
+      ^
+
+      * item one
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <ul>
+        <li>item one</li>
+        <li>item two</li>
+      </ul>
+      <ul>
+        <li>item one</li>
+      </ul>
+      ~~~
+
+    Input:
+
+      ~~~ strictdown
+      term one
+      : definition one
+
+      term two
+      : definition two
+
+      ^
+
+      term one
+      : definition one
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <dl>
+        <dt>term one</dt>
+        <dd>definition one</dd>
+        <dt>term two</dt>
+        <dd>definition two</dd>
+      </dl>
+      <dl>
+        <dt>term one</dt>
+        <dd>definition one</dd>
+      </dl>
+      ~~~
+
+    Input:
+
+      ~~~ strictdown
+      * a paragraph
+
+            a code block in an list item
+
+      ^
+
+          another code block
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <ul>
+        <li>
+          <p>a paragraph</p>
+          <pre>a code block in an list item</pre>
+        </li>
+      </ul>
+      <pre>another code block</pre>
+      ~~~
+
+  Sub-indented Elements
+  ---------------------
+
+    Every |block-level| elements except simple code block can be indented with
+    at most three spaces, and the following elements can be indented based on
+    the new indentation level. This will not have any real effect on the result.
+
+    Input:
+
+      ~~~ strictdown
+      Here is some code:
+
+        ~~~ python
+        def foo():
+            print("Hello, world!")
+
+        foo()
+        ~~~
+
+      Python is easy to learn.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      <p>Here is some code:</p>
+      <pre class="lang-python">def foo():
+          print(&quot;Hello, world!&quot;)
+
+      foo()</pre>
+      <p>Python is easy to learn.</p>
+      ~~~
+
+  Macros
+  ------
+
+    Macros have two uniforms: `<[macro_name]>` and `<[macro_name parameters]>`.
+
+    Macros are used to do some tricky jobs, they are special |block-level|
+    elements, and they can contain blanklines.  Currently there is only one
+    macro -- |table of contents|. If you dive into the source code of
+    strictdown.js, you can add your own macros.
+
+    Macros which do not have a valid macro name will be ignored and there will
+    be no output for them.

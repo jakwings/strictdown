@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Quick Reference for Strictdown</title>
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
+    <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script src="strictdown.min.js"></script>
+    <style>
+      body {
+        font-family: serif;
+        font-size: 14px;
+        padding: 0;
+        margin: 0;
+        background: #ccc;
+      }
+      #main {
+        margin: auto;
+        max-width: 916px;
+        padding: 1em 0.5em;
+        border: 1px solid #eee;
+        background: #f8f8f8;
+      }
+      table {
+        border-spacing: 0;
+        border-collapse: collapse;
+      }
+      td, th {
+        border: 1px solid;
+        padding: 5px;
+      }
+      h1 {
+        background: #432;
+        color: #f8f8f8;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 1px 0 2px #ddd;
+      }
+      h2 {
+        border-bottom: 1px solid;
+      }
+      h3 {
+        background: #654;
+        color: #f8f8f8;
+        padding: 1px 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 1px 0 2px #ddd;
+      }
+      a, a:link, a:hover, a:active {
+        color: #24c;
+      }
+      a:visited {
+        color: #235;
+      }
+      pre {
+        font-family: 'Courier New', Courier, Consolas, monospace;
+        overflow: auto;
+        margin: 0;
+      }
+      pre, .smd-preview {
+        background: #fff;
+        border: 1px solid #eee;
+        border-bottom: 1px solid #dfdfdf;
+        padding: 5px;
+        border-left: 2px solid #333;
+        padding-left: 5px;
+        cursor: pointer;
+      }
+      .smd-preview pre {
+        background: initial;
+        border: initial;
+        padding: initial;
+        cursor: initial;
+      }
+      .smd-preview h1, .smd-preview h2, .smd-preview h3 {
+        background: initial;
+        color: initial;
+        padding: initial;
+        border: initial;
+        border-radius: initial;
+        box-shadow: initial;
+      }
+      .smd-footnote td, .smd-footnote th {
+        border: none;
+      }
+      .clearfix {
+        *zoom: 1;
+      }
+      .clearfix:before, .clearfix:after {
+        display: table;
+        content: "";
+        line-height: 0;
+      }
+      .clearfix:after {
+        clear: both;
+      }
+      .smd-literal {
+        white-space: pre-wrap;
+        background: yellow;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main">
+<pre id="source">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ * ~
+&lt;h1 style="text-align:center"&gt;Strictdown Syntax&lt;/h1&gt;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TL;DR. You'd better forget Markdown before reading this document.
+
+Strictdown was created to be easy to write, and still readable in plain text
+format, with a strict and powerful syntax. It is as simple as [Markdown]:[] but
+not as complicated as [reStructuredText]:[].
+
+  :[Markdown]: http://daringfireball.net/projects/markdown/syntax
+  :[reStructuredText]: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
+
+Below are details of all available elements that can be used in a Strictdown
+text. You can left click the outputs to view their HTML code, then left click
+again to restore them.
+
+Here are two important suggestions for you to use Strictdown:
+
+  1. Write with a good indentation style.
+  2. Keep it simple and don't panic.
+
+If you keep these suggestions in mind, you don't need to remember all the
+syntax details.
+
+For a quick reference, see: "[Quick Reference]:(QuickReference.html)".
+
+Or try the [live demo]:(demo.html).
+
+&lt;[toc &lt;h2&gt;Contents&lt;/h2&gt;]&gt;
+
+
+Source Text Formatting
+======================
+
+  Structures
+  ----------
+
+    The document consists of two types of elements, block-level elements and
+    span-level elements:
+
+      * Block-level elements define the main structure of the content, for
+        example, what part of the text should be a paragraph, a list,
+        a blockquote and so on.
+
+      * Span-level elements mark up small text parts as, for example, emphasized
+        text or a link.
+
+    Thus span-level elements can only occur inside block-level elements or other
+    span-level elements.
+
+    You will often find references to the "first column" or "first character" of
+    a line in a block-level element descriptions. Such a reference is always to
+    be taken relative to the current indentation level because some block-level
+    elements open up a new indentation level (e.g. blockquotes). The beginning
+    of a Strictdown document opens up the default indentation level which begins
+    at the first column of the text.
+
+  Linebreaks
+  ----------
+
+    As we know, Windows OS uses CRLF to represent a linebreak, Old Mac OS uses
+    CR, Linux OS and modern Mac OS uses LF. For convenience, all CRLFs and CRs
+    will be replaced with LFs before parsing.
+
+  Character Escaping
+  ------------------
+
+    Since Strictdown uses some characters to mark up the text, there needs to
+    be a way to escape these special characters so that they can have their
+    normal meaning. This can be done by using backslash escapes. For example,
+    you can use a literal backtick `\`` like this:
+
+    ~~~ strictdown
+    This \`is not literal\` text!
+    ~~~
+
+    Following is a list of all the characters (character sequences) that can be
+    escaped:
+
+    ~~~
+    \ backslash
+    + plus sign
+    - dash (minus sign)
+    * asterisk
+    _ underscore
+    = equal sign
+    ~ tilde
+    " double quote
+    : colon
+    . period
+    ^ caret
+    | pipe
+    &amp; ampersand
+    @ at sign
+    # hash (sharp)
+    ` backtick (back quote)
+    () left or right parentheses
+    [] left or right square brackets
+    {} left or right curly brackets
+    &lt;&gt; left or right angle brackets
+    ~~~
+
+  Spaces
+  ------
+
+    Space (U+0020) is the only character that can be used to represent
+    syntactic indentations.
+
+    When parsing |block-level| elements, all unnecessary trailing spaces will be
+    ignored and they won't affect the syntax matching. So, don't worry about the
+    spaces mistakenly added to any line of your source code.
+
+    Apart from the characters above, spaces can be escaped, too. If a space is
+    escaped under normal circumstances, it will become an `&amp;nbsp;`. Otherwise,
+    it will be kept as is and the backslash will be ignored, i.e. "`\\ `" will
+    become "` `".
+
+  Block Boundaries
+  ----------------
+
+    Normally |block-level| elements must be separated by {blank lines} -- lines
+    that contain no character or just spaces. But some of the same type can be
+    put together for a compact style. Under special circumstances blank lines
+    may be not enough to separate them, then you must use |block dividers|.
+
+
+{Block-level} Elements -- Structural Elements
+=============================================
+
+  Paragraphs
+  ----------
+
+    Consecutive lines of text are considered to be one paragraph, because you
+    can use "{lazy syntax}" -- hard-wrap the text with linebreaks. Multiple
+    lines will be trimed first -- all leading and trailing spaces are removed,
+    then joined with a space by default (This behavior can be changed by
+    setting the options of the converter.). Any leading or trailing spaces will
+    be stripped from every line.
+
+    Any text block that doesn't match the syntax of other |block-level|
+    elements will be treated as a paragraph, too.
+
+    Input:
+
+      ~~~ strictdown
+      The first paragraph.
+
+      The second paragraph
+      using lazy syntax.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;The first paragraph.&lt;/p&gt;
+      &lt;p&gt;The second paragraph using lazy syntax.&lt;/p&gt;
+      ~~~
+
+    If you want to keep a trailing space, just escape it by prepending
+    a backslash `\\` to it.
+
+    Input:
+
+      ~~~ **strictdown
+      &lt;pre class="lang-strictdown"&gt;The first paragraph.\\` `&lt;/pre&gt;
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;The first paragraph.&amp;nbsp;&lt;/p&gt;
+      ~~~
+
+  Headings
+  --------
+
+    Strictdown supports Setext style headings and atx style headings. Both of
+    them allow |lazy syntax|.
+
+    A Setext style heading consists of the title, and a line with only one or
+    more consecutive equal signs (for a first level heading) or dashes (for
+    a second level heading) beginning at the first column.
+
+    Input:
+
+      ~~~ strictdown
+      First level heading
+      ===================
+
+      Second level heading
+      --------------------
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;h1 id="smd-heading-1"&gt;First level heading&lt;/h1&gt;
+      &lt;h2 id="smd-heading-2"&gt;Second level heading&lt;/h2&gt;
+      ~~~
+
+    A atx style heading begins with one or more hash characters and then the title. The number of hash characters specifies the heading level: one hash character gives you a first level heading, two a second level heading and so on until the maximum of six hash characters for a sixth level heading. You may optionally use any number of hashes at the end of the line to close the heading. Any leading or trailing spaces will be stripped from the title.
+
+    Input:
+
+      ~~~ strictdown
+      # H1 heading ####
+
+      ## H2 heading ###
+
+      ### H3 heading ##
+
+      #### H4 heading #
+
+      ##### H5 heading
+
+      ###### H6 heading
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;h1 id="smd-heading-1"&gt;H1 heading&lt;/h1&gt;
+      &lt;h2 id="smd-heading-2"&gt;H2 heading&lt;/h2&gt;
+      &lt;h3 id="smd-heading-3"&gt;H3 heading&lt;/h3&gt;
+      &lt;h4 id="smd-heading-4"&gt;H4 heading&lt;/h4&gt;
+      &lt;h5 id="smd-heading-5"&gt;H5 heading&lt;/h5&gt;
+      &lt;h6 id="smd-heading-6"&gt;H6 heading&lt;/h6&gt;
+      ~~~
+
+  {Table of Contents}
+  -------------------
+
+    You can insert a table of contents, i.e. a list of top-level headings,
+    using a line containing only `&lt;[toc]&gt;` anywhere.
+
+    Input:
+
+      ~~~ strictdown
+      &lt;[toc]&gt;
+
+      # H1
+
+      ## H2
+
+      ### H3
+
+      # H1
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;div id="smd-contents"&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href="#smd-heading-1"&gt;H1&lt;/a&gt;
+            &lt;ul&gt;
+              &lt;li&gt;&lt;a href="#smd-heading-2"&gt;H2&lt;/a&gt;
+                &lt;ul&gt;
+                  &lt;li&gt;&lt;a href="#smd-heading-3"&gt;H3&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;&lt;a href="#smd-heading-4"&gt;H1&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;h2 id="smd-heading-1"&gt;H1&lt;/h2&gt;
+      &lt;h3 id="smd-heading-2"&gt;H2&lt;/h3&gt;
+      &lt;h4 id="smd-heading-3"&gt;H3&lt;/h4&gt;
+      &lt;h2 id="smd-heading-4"&gt;H1&lt;/h2&gt;
+      ~~~
+
+    You can also specify a title for TOC by appending at least one space and
+    the title to `&lt;[toc`. |Lazy syntax| is allowed and all leading and trailing
+    spaces will be stripped from the title.
+
+    Input:
+
+      ~~~ strictdown
+      &lt;[toc Contents:]&gt;
+
+      # H1
+
+      ## H2
+
+      ### H3
+
+      # H1
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;div id="smd-contents"&gt;
+        &lt;div class="smd-contents-title"&gt;Contents:&lt;/div&gt;
+        &lt;ul&gt;
+          &lt;li&gt;&lt;a href="#smd-heading-1"&gt;H1&lt;/a&gt;
+            &lt;ul&gt;
+              &lt;li&gt;&lt;a href="#smd-heading-2"&gt;H2&lt;/a&gt;
+                &lt;ul&gt;
+                  &lt;li&gt;&lt;a href="#smd-heading-3"&gt;H3&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;&lt;a href="#smd-heading-4"&gt;H1&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;h2 id="smd-heading-1"&gt;H1&lt;/h2&gt;
+      &lt;h3 id="smd-heading-2"&gt;H2&lt;/h3&gt;
+      &lt;h4 id="smd-heading-3"&gt;H3&lt;/h4&gt;
+      &lt;h2 id="smd-heading-4"&gt;H1&lt;/h2&gt;
+      ~~~
+
+  Blockquotes
+  -----------
+
+    A blockquote begins with a right angle bracket. All following lines that
+    also begin with a right angle bracket, optionally separated by |blank
+    lines|, belong to the blockquote. You can use any |block-level| element
+    inside a blockquote. And the inner elements can be indented with any number
+    of spaces. No indentation is needed for |blank lines|.
+
+    Input:
+
+      ~~~ strictdown
+      &gt; # Heading
+      &gt;
+      &gt; A paragraph.
+
+      &gt; &gt; Nested blockquote are
+      &gt; &gt; also possible.
+
+      &gt; Another paragraph.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;blockquote&gt;
+        &lt;h2&gt;Heading&lt;/h2&gt;
+        &lt;p&gt;A paragraph.&lt;/p&gt;
+        &lt;blockquote&gt;
+          &lt;p&gt;Nested blockquote are also possible.&lt;/p&gt;
+        &lt;/blockquote&gt;
+        &lt;p&gt;Another paragraph.&lt;/p&gt;
+      &lt;/blockquote&gt;
+      ~~~
+
+    If you just want to wrap |simple code blocks| into the blockquote, you must
+    use |blank lines| before the code block to help Strictdown to decide the
+    indentation.
+
+    Input:
+
+      ~~~ **strictdown
+      &lt;pre class="lang-strictdown"&gt;\&gt;` `
+      \&gt;`     `some code here
+
+      \&gt;
+      \&gt;`    `some code here&lt;/pre&gt;
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;blockquote&gt;
+        &lt;pre&gt;some code here&lt;/pre&gt;
+        &lt;pre&gt;some code here&lt;/pre&gt;
+      &lt;/blockquote&gt;
+      ~~~
+
+  {Simple Code Blocks}
+  --------------------
+
+    A simple code block consist of blank lines and lines indented with four spaces.
+
+    Input:
+
+      ~~~ **strictdown
+      &lt;pre class="lang-strictdown"&gt;`    `while (coding) \{
+      `    `    write(0xDEADBEEF);
+      `    `\}
+
+      `    `// Code can be separated by blank lines.&lt;/pre&gt;
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;pre&gt;while (coding) {
+          write(0xDEADBEEF);
+      }
+
+      // Code can be separated by blank lines.&lt;/pre&gt;
+      ~~~
+
+  Fenced Code Blocks
+  ------------------
+
+    Fenced code blocks are much more powerful than |simple code blocks|. You do
+    not need to indent the content with spaces, but just surround the code with
+    three or more tildes which are called fences. Fences must start at the
+    first column, and the closing fence must have at least as many tildes as
+    the openning fence.  All blank lines between the fences will be preserved.
+
+    Input:
+
+      ~~~~~~ strictdown
+      ~~~~
+      while (coding) {
+          write(0xDEADBEEF);
+      }
+
+      Ending lines must have at least as
+      many tildes as the openning fence.
+      ~~~
+
+      // Empty lines are preserved.
+
+      ~~~~~
+      ~~~~~~
+
+    Output:
+
+      ~~~~~~ html
+      &lt;pre&gt;while (coding) {
+          write(0xDEADBEEF);
+      }
+
+      Ending lines must have at least as
+      many tildes as the openning fence.
+      ~~~
+
+      // Empty lines are preserved.
+
+      &lt;/pre&gt;
+      ~~~~~~
+
+    You can also specify the language of the code:
+
+    Input:
+
+      ~~~~~~ strictdown
+      ~~~ python
+      def foo():
+          print("Hello, world!")
+
+      foo()
+      ~~~
+      ~~~~~~
+
+    Output:
+
+      ~~~ html
+      &lt;pre class="lang-python"&gt;def foo():
+          print(&amp;quot;Hello, world!&amp;quot;)
+
+      foo()&lt;/pre&gt;
+      ~~~
+
+    Strictdown has further extended the syntax of fenced code blocks. You can
+    directly insert raw HTML code into the document by prefixing the language
+    name with an asterisk.
+
+    Input:
+
+      ~~~~~~ strictdown
+      ~~~ *html
+      &lt;h1&gt;This is a H1 heading.&lt;/h1&gt;
+      &lt;p&gt;This is a paragraph.&lt;/p&gt;
+      ~~~
+      ~~~~~~
+
+    Output:
+
+      ~~~ html
+      &lt;h1&gt;This is a H1 heading.&lt;/h1&gt;
+      &lt;p&gt;This is a paragraph.&lt;/p&gt;
+      ~~~
+
+    If you want to use |span-level| elements in raw HTML code, just prepend
+    at least two asterisks to the language name.
+
+    Input:
+
+      ~~~~~~ strictdown
+      ~~~ **html
+      &lt;p&gt;This is a __paragraph__.&lt;/p&gt;
+      ~~~
+      ~~~~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;This is a &lt;i&gt;paragraph&lt;/i&gt;.&lt;/p&gt;
+      ~~~
+
+    In fact, the closing fence is optional. If there is no closing fence for
+    the openning fence, all following lines in the same indentation level
+    belong to the code block.
+
+    Input:
+
+      ~~~ strictdown
+      &gt; ~~~
+      &gt; some code
+      &gt;
+      &gt; still code
+
+      A normal paragraph.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;blockquote&gt;
+      &lt;pre&gt;some code
+
+      still code&lt;/pre&gt;
+      &lt;/blockquote&gt;
+      &lt;p&gt;A normal paragraph.&lt;/p&gt;
+      ~~~
+
+  Horizontal Rules
+  ----------------
+
+    A horizontal rule consists of three or more asterisks or dashes (they can
+    not be mixed), optionally separated by spaces.
+
+    Input:
+
+      ~~~ strictdown
+      * * *
+
+      ---
+
+      - -  -   -     -
+
+      ----------------
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;hr&gt;
+      &lt;hr&gt;
+      &lt;hr&gt;
+      &lt;hr&gt;
+      ~~~
+
+  Ordered Lists &amp; Unordered Lists
+  -------------------------------
+
+    Strictdown supports ordered and unordered lists. Ordered lists are started
+    by using a number followed by a period, a space and then the list item
+    text.  All the following lines which are in the same indentation level with
+    the list marker belong to the list item. List markers (number, period, and
+    space) must start at the first column. You can use any natural number in
+    any order for the list
+    markers.
+
+    Input:
+
+      ~~~ strictdown
+      1. First list item
+
+      2. Second list item
+      0. Third list item
+         using lazy syntax.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;ol&gt;
+        &lt;li&gt;First list item&lt;/li&gt;
+        &lt;li&gt;Second list item&lt;/li&gt;
+        &lt;li&gt;Third list item using lazy syntax.&lt;/li&gt;
+      &lt;/ol&gt;
+      ~~~
+
+    As the {list item} can contain |block-level| elements, you can create nested
+    lists. The nested elements must be indented based on the indentation level
+    of the list item (the list marker are treated as spaces). And the text
+    right after the list marker is taken as a paragraph and can be indented
+    with over four spaces by default.
+
+    Input:
+
+      ~~~ strictdown
+      1. item one
+
+         1. sub item one
+         2. sub item two
+         3. sub item three
+
+      2. item two
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;ol&gt;
+        &lt;li&gt;
+          &lt;p&gt;item one&lt;/p&gt;
+          &lt;ol&gt;
+            &lt;li&gt;sub item one&lt;/li&gt;
+            &lt;li&gt;sub item two&lt;/li&gt;
+            &lt;li&gt;sub item three&lt;/li&gt;
+          &lt;/ol&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;item two&lt;/p&gt;
+        &lt;/li&gt;
+      &lt;/ol&gt;
+      ~~~
+
+    If you want to use a |block-level| element as the first child of the list
+    item, just leave nothing after the list marker, then nest the element.
+    Besides, if one of the list item contains |block-level| elements, all
+    simple list item in the same list will become paragraphs.
+
+    Input:
+
+      ~~~ **strictdown
+      &lt;pre class="lang-strictdown"&gt;1.` `
+
+      `   `A paragraph here.
+
+      2. Another paragraph.&lt;/pre&gt;
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;ol&gt;
+        &lt;li&gt;
+          &lt;p&gt;A paragraph here.&lt;/p&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;Ok&lt;/p&gt;
+        &lt;/li&gt;
+      &lt;/ol&gt;
+      ~~~
+
+    Unordered lists are started by using an asterisk, a dash or a plus sign
+    (they can be mixed) and a space. Apart from that unordered lists follow the
+    same rules as ordered lists.
+
+    Input:
+
+      ~~~ strictdown
+      - item one
+
+        + sub item one
+        * sub item two
+
+      + item two
+
+      + item three
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;ul&gt;
+        &lt;li&gt;
+          &lt;p&gt;item one&lt;/p&gt;
+          &lt;ul&gt;
+            &lt;li&gt;sub item one&lt;/li&gt;
+            &lt;li&gt;sub item two&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;item two&lt;/p&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;item three&lt;/p&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+      ~~~
+
+  Definition Lists
+  ----------------
+
+    A definition list works similar to a normal list and is used to associate
+    definition with terms.  Definition lists are started when a normal
+    paragraph is followed by a line starting with a colon and a space (list
+    marker), and then the definition text.  One term can have many definitions
+    and multiple terms can have the same definition. Each line of the preceding
+    paragraph is assumed to contain one term.
+
+    Every line of the paragraph is taken as a term. Terms can not begin with
+    a space nor a colon.
+
+    Definitions can be separated by |blank lines|. But you must separated the
+    next term and the previous definition text with |blank lines|.
+
+    Input:
+
+      ~~~ strictdown
+      term one
+      : definition
+      : another definition
+
+      : the third definition
+
+      term two
+      term three
+      : definition
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;dl&gt;
+        &lt;dt&gt;term one&lt;/dt&gt;
+        &lt;dd&gt;definition&lt;/dd&gt;
+        &lt;dd&gt;another definition&lt;/dd&gt;
+        &lt;dd&gt;the third definition&lt;/dd&gt;
+        &lt;dt&gt;term two&lt;/dt&gt;
+        &lt;dt&gt;term three&lt;/dt&gt;
+        &lt;dd&gt;definition&lt;/dd&gt;
+      &lt;/dl&gt;
+      ~~~
+
+    Definitions can contain |block-level| elements, too, and behave like the
+    normal |list item|.
+
+    Input:
+
+      ~~~ **strictdown
+      &lt;pre class="lang-strictdown"&gt;This is a term
+      : a paragraph
+
+        \&gt; a blockquote
+
+      This is another term
+      :` `
+
+      `  `\&gt; The first child element is usually treated as
+      `  `\&gt; a paragraph. So you must start with a blank
+      `  `\&gt; line.&lt;/pre&gt;
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;dl&gt;
+        &lt;dt&gt;This is a term&lt;/dt&gt;
+        &lt;dd&gt;
+          &lt;p&gt;a paragraph&lt;/p&gt;
+          &lt;blockquote&gt;
+            &lt;p&gt;a blockquote&lt;/p&gt;
+          &lt;/blockquote&gt;
+        &lt;/dd&gt;
+        &lt;dt&gt;This is another term&lt;/dt&gt;
+        &lt;dd&gt;
+          &lt;blockquote&gt;
+            &lt;p&gt;The first child element is usually treated as a paragraph. So you must start with a blank line.&lt;/p&gt;
+          &lt;/blockquote&gt;
+        &lt;/dd&gt;
+      &lt;/dl&gt;
+      ~~~
+
+  Tables
+  ------
+
+    Strictdown supports a syntax for creating simple or complex tables.  A table
+    consists of one optional header (`&lt;thead&gt;`), one or multiple bodies
+    (`&lt;tbody&gt;`), and one optional footer (`&lt;tfoot&gt;`).
+
+    Table cells on the same row are divided by a pipe `|` or a caret `^`, and
+    surrounded by a pipe or a caret. Table bodies is divided by lines of dashes
+    surrounded by a pipe or a caret. The four outer corners must use plus signs
+    instead of pipes or carets. If you want to use pipes or carets in a cell,
+    escape it with a backslash.
+
+    It it unnecessary to align the table cell dividers, but the left border of
+    the table must start at the first column.
+    
+    Below is a simple table with two table bodies. You can align the content of
+    table cells, too. Just add at least two whitespaces at the opposite end of
+    your text: Add two spaces on the left to align right, two spaces on the
+    right to align left and two spaces at least at both ends for centered text.
+    The content of table cells are left aligned by default.
+
+    Input:
+
+      ~~~ strictdown
+      +--------------------------------------------+
+      |        right |    center    | left         |
+      | left         |        right |    center    |
+      |--------------------------------------------|
+      | xxxxxxxxxxxx | xxxxxxxxxxxx | xxxxxxxxxxxx |
+      +--------------------------------------------+
+
+      The same table:
+
+      +-+
+      |  right|  center  |left  |
+      |left  |  right|  center  |
+      |-|
+      |xxxxxxxxxxxx|xxxxxxxxxxxx|xxxxxxxxxxxx|
+      +-+
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;table&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:right;"&gt;right&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;center&lt;/td&gt;
+            &lt;td style="text-align:left;"&gt;left&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:left;"&gt;left&lt;/td&gt;
+            &lt;td style="text-align:right;"&gt;right&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;center&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:left;"&gt;xxxxxxxxxxxx&lt;/td&gt;
+            &lt;td style="text-align:left;"&gt;xxxxxxxxxxxx&lt;/td&gt;
+            &lt;td style="text-align:left;"&gt;xxxxxxxxxxxx&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+      &lt;p&gt;The same table:&lt;/p&gt;
+      &lt;table&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:right;"&gt;right&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;center&lt;/td&gt;
+            &lt;td style="text-align:left;"&gt;left&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:left;"&gt;left&lt;/td&gt;
+            &lt;td style="text-align:right;"&gt;right&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;center&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:left;"&gt;xxxxxxxxxxxx&lt;/td&gt;
+            &lt;td style="text-align:left;"&gt;xxxxxxxxxxxx&lt;/td&gt;
+            &lt;td style="text-align:left;"&gt;xxxxxxxxxxxx&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+      ~~~
+
+    You can use a caret sign to denote a header cell:
+
+    Input:
+
+      ~~~ strictdown
+      +-----------------------------------------+
+      ^ Negative  ^ Characteristic  ^ Positive  |
+      | Sad       ^ Mood            | Happy     |
+      | Failing   ^ Grade           | Passing   |
+      +-----------------------------------------+
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;table&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;th style="text-align:left;"&gt;Negative&lt;/th&gt;
+            &lt;th style="text-align:left;"&gt;Characteristic&lt;/th&gt;
+            &lt;th style="text-align:left;"&gt;Positive&lt;/th&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:left;"&gt;Sad&lt;/td&gt;
+            &lt;th style="text-align:left;"&gt;Mood&lt;/th&gt;
+            &lt;td style="text-align:left;"&gt;Happy&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:left;"&gt;Failing&lt;/td&gt;
+            &lt;th style="text-align:left;"&gt;Grade&lt;/th&gt;
+            &lt;td style="text-align:left;"&gt;Passing&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+      ~~~
+
+    Below is a table with a table header and a table footer. You can use equal
+    signs instead of dashes for the top border to indicate the start of a table
+    header. The table header must be ended by a line of equal signs surrounded
+    by a pipe or a caret. The table footer is started by a line of equal signs
+    surrounded by a pipe or a caret.
+
+    Input:
+
+      ~~~ strictdown
+      +========================================+
+      |     Languages |  English  |  Japanese  |
+      |========================================|
+      ^        Test 1 |    80     |     92     |
+      ^        Test 2 |    85     |     73     |
+      ^        Test 3 |    82     |     88     |
+      |========================================|
+      |  Total Scores |    247    |     253    |
+      |       Average |    82.3   |     84.3   |
+      +----------------------------------------+
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;table&gt;
+        &lt;thead&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:right;"&gt;Languages&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;English&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;Japanese&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;th style="text-align:right;"&gt;Test 1&lt;/th&gt;
+            &lt;td style="text-align:center;"&gt;80&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;92&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;th style="text-align:right;"&gt;Test 2&lt;/th&gt;
+            &lt;td style="text-align:center;"&gt;85&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;73&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;th style="text-align:right;"&gt;Test 3&lt;/th&gt;
+            &lt;td style="text-align:center;"&gt;82&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;88&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+        &lt;tfoot&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:right;"&gt;Total Scores&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;247&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;253&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:right;"&gt;Average&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;82.3&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;84.3&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tfoot&gt;
+      &lt;/table&gt;
+      ~~~
+
+    You can use "`:::`" or combine multiple "`|`" to make spanning of rows or columns:
+
+    Input:
+
+      ~~~ strictdown
+      +------------------------------------------------+
+      |  Table Body Content              ||  Column 3  |
+      |  :::                             ||  Column 3  |
+      |  Table Body Content              ||  Column 3  |
+      |  Table Body Content  |  Column 2  |  :::       |
+      +------------------------------------------------+
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;table&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;td colspan="2" rowspan="2" style="text-align:center;"&gt;Table Body Content&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;Column 3&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:center;"&gt;Column 3&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td colspan="2" style="text-align:center;"&gt;Table Body Content&lt;/td&gt;
+            &lt;td rowspan="2" style="text-align:center;"&gt;Column 3&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:center;"&gt;Table Body Content&lt;/td&gt;
+            &lt;td style="text-align:center;"&gt;Column 2&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+      ~~~
+
+  Images
+  ------
+
+    Although there are "image" type |span-level| elements, you can insert an image without wrapping it with a paragraph.
+
+    An image is represented by alternative text wrapped in a pair of square
+    brackets `[]` beginning at the first column, then an at sign `@`, followed
+    by some image information wrapped in a pair of angle brackets `&lt;&gt;`.
+
+    The {image information} must begin with the URI. Other information in order
+    includes the image size, the ":left" or ":right" floating attribute, the
+    image title. Different part of the information can be separated by spaces,
+    or a linebreak and at least one space.
+    
+    The image size, i.e. the width and height, is separated by a comma. If both
+    the image size and the floating attribute are specified, the floating
+    attribute must stick with the image size. The width or height can not
+    contain any of these characters: ` `, `"`, `'`, `,`, `:`, `&amp;`, `;`, or
+    a linebreak.
+    
+    The image title must be wrapped in two double quotes, and if you want to
+    use a double quote or backslash, please escape it with a backslash.
+
+    Input:
+
+      ~~~ strictdown
+      Some images:
+
+      [alternative text]@&lt;http://example.com/image1.png&gt;
+      [alternative text]@&lt;http://example.com/image2.png "title"&gt;
+      [alternative text]@&lt;http://example.com/image3.png 100px,auto&gt;
+      [alternative text]@&lt;http://example.com/image4.png 100px,auto:left&gt;
+      [alternative text]@&lt;http://example.com/image5.png :right&gt;
+
+      [alternative text]@&lt;https://avatars0.githubusercontent.com/u/1451509?s=160
+                          100px,auto:left
+                          "My Avatar"&gt;
+
+      A paragraph.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;Some images:&lt;/p&gt;
+      &lt;img src="http://example.com/image1.png" alt="alternative text"&gt;
+      &lt;img src="http://example.com/image2.png" alt="alternative text" title="title"&gt;
+      &lt;img src="http://example.com/image3.png" alt="alternative text" style="width:100px;height:auto;"&gt;
+      &lt;img src="http://example.com/image4.png" alt="alternative text" style="float:left;width:100px;height:auto;"&gt;
+      &lt;img src="http://example.com/image5.png" alt="alternative text" style="float:right;"&gt;
+      &lt;img src="https://avatars0.githubusercontent.com/u/1451509?s=160" alt="alternative text" title="My Avatar" style="float:left;width:100px;height:auto;"&gt;
+      &lt;p&gt;A paragraph.&lt;/p&gt;
+      ~~~
+
+
+{Span-level} Elements -- Text Modifiers
+=======================================
+
+  When matching span-level elements, the syntax is not "greedy", and it will
+  stop pattern matching once the text is matched.
+
+  Linebreaks
+  ----------
+
+    You can manually insert a `&lt;br&gt;` by placing a single backslash at the end
+    of a line.
+
+    Input:
+
+      ~~~ strictdown
+      The first line of my poem.\
+      THe second line of my poem.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;The first line of my poem.&lt;br&gt;
+      THe second line of my poem.&lt;/p&gt;
+      ~~~
+
+  Emphasis
+  --------
+
+    Emphasis can be added to text by surrounding the text with double
+    underscores. Spaces are not allowed at the inner sides of double
+    underscores.
+
+    Input:
+
+      ~~~ strictdown
+      This is __emphasized__, and this is partial__ly__ emphasized.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;This is &lt;i&gt;emphasized&lt;/i&gt;, and this is partial&lt;i&gt;ly&lt;/i&gt; emphasized.&lt;/p&gt;
+      ~~~
+
+  Strong Emphasis
+  ---------------
+
+    Strong emphasis can be added to text by surrounding the text with double
+    asterisks. Spaces are not allowed at the inner sides of double asterisks.
+
+    Input:
+
+      ~~~ strictdown
+      This is **strongly** emphasized, and this is partial**ly** emphasized.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;This is &lt;b&gt;strongly&lt;/b&gt; emphasized, and this is partial&lt;b&gt;ly&lt;/b&gt; emphasized.&lt;/p&gt;
+      ~~~
+
+  Deletions
+  ---------
+
+    Text can have a deletion effect by surrounding the text with double tildes.
+    Spaces are not allowed at the inner sides of double tildes.
+
+    Input:
+
+      ~~~ strictdown
+      ~~This sentence is no longer true.~~ Please ~~trust~~ ignore it.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;&lt;del&gt;This sentence is no longer true.&lt;/del&gt; Please &lt;del&gt;trust&lt;/del&gt; ignore it.&lt;/p&gt;
+      ~~~
+
+  Literal Text
+  ------------
+
+    If you don't want the special characters to take effects, just surround it
+    by a backtick. Then only backticks or backslashes need to be escaped.
+
+    Input:
+
+      ~~~ strictdown
+      This is **not** `**bold**`.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;This is &lt;b&gt;not&lt;/b&gt; &lt;span class="smd-literal"&gt;**bold**&lt;/span&gt;.&lt;/p&gt;
+      ~~~
+
+  Code Snippets
+  -------------
+
+    Code snippets is similar to literal text, but use two or more backticks to
+    surround the text, and you can specify the language it uses in a pair of
+    parentheses right after the snippets (spaces are not allowed at the inner
+    sides of the parentheses).
+    
+    Code snippets must contain at least one character but not only backticks.
+    If you want to use only backticks in the snippet, use spaces to separate
+    the markers and make sure the markers have at least as many characters as
+    the backticks in the content.
+
+    Input:
+
+      ~~~ strictdown
+      Einstein's famous equation: ``E = mc^2``(latex)
+
+      Press ```Enter``` or `` ` `` to confirm your request.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;Einstein&amp;#39;s famous equation: &lt;code class="lang-latex"&gt;E = mc^2&lt;/code&gt;&lt;/p&gt;
+      &lt;p&gt;Press &lt;code&gt;Enter&lt;/code&gt; or &lt;code&gt; ` &lt;/code&gt; to confirm your request.&lt;/p&gt;
+      ~~~
+
+  Links &amp; Images
+  --------------
+
+    A {link} can be created by surrounding the text with a pair of square
+    brackets (spaces are not allowed at the inner sides of brackets) and
+    a colon followed by a link URL in a pair of parentheses.
+
+    An image can be inserted by surrounding the text with a pair of square
+    brackets (spaces are not allowed at the inner sides of brackets) and an at
+    sign followed by a link URL in a pair of parentheses.
+
+    Input:
+
+      ~~~ strictdown
+      [My Avatar]@(https://avatars0.githubusercontent.com/u/1451509?s=32)
+
+      A [link]:(https://github.com/jakwings/strictdown) to my project.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;&lt;img src="https://avatars0.githubusercontent.com/u/1451509?s=32" alt="My Avatar"&gt;&lt;/p&gt;
+      &lt;p&gt;A &lt;a class="smd-ref-link" href="https://github.com/jakwings/strictdown"&gt;link&lt;/a&gt; to my project.&lt;/p&gt;
+      ~~~
+
+    There is another way to create links or images which does not interrupt the
+    text flow a lot. The URL and title are defined using a reference name and
+    this reference name is then used in a pair of square brackets instead of
+    the link URL. Then you can have to define the reference elsewhere.
+    
+    A link definition is started with a colon, then the reference name in
+    a pair of square brackets, then a colon, followed by the URI and an
+    optional title wrapped in two double quotes. The reference name of link
+    definitions can not start with a caret, an asterisk, or an at sign, and can
+    not contain linebreaks or square brackets.  Multiple link definitions is
+    not necessary to be separated by |blank lines|.
+
+    An image definition is started with an at sign, then the reference name in
+    a pair of square brackets, then a colon, followed by the |image
+    information| without any wrapper.  Multiple image definitions is not
+    necessary to be separated by |blank lines|. The reference name is
+    case-insensitive and can not contain any linebreak or square bracket.
+    
+    The reference name is case-insensitive both for links and images.
+
+    Input:
+
+      ~~~ strictdown
+      [My Avatar]@[avatar]
+
+      A [link]:[project] to my project.
+
+      @[avatar]: https://avatars0.githubusercontent.com/u/1451509?s=160
+                 32px,32px "Nice to meet you."
+
+      :[project]: https://github.com/jakwings/strictdown
+                  "Welcome to fork!"
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;&lt;img src="https://avatars0.githubusercontent.com/u/1451509?s=160" alt="My Avatar" title="Nice to meet you." style="width:32px;height:32px;"&gt;&lt;/p&gt;
+      &lt;p&gt;A &lt;a class="smd-ref-link" href="https://github.com/jakwings/strictdown" title="Welcome to fork!"&gt;link&lt;/a&gt; to my project.&lt;/p&gt;
+      ~~~
+
+    You can also omit the reference name and URL of the link, then a link
+    definition that has the linked text as its id will be applied.
+
+    Input:
+
+      ~~~ strictdown
+      A link to my [project]:[].
+
+      A link to my [project]:().
+
+      A link to my [project].
+
+      :[project]: https://github.com/jakwings/strictdown
+                  "Welcome to fork!"
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;A link to my &lt;a class="smd-ref-link" href="https://github.com/jakwings/strictdown" title="Welcome to fork!"&gt;project&lt;/a&gt;.&lt;/p&gt;
+      &lt;p&gt;A link to my &lt;a class="smd-ref-link" href="https://github.com/jakwings/strictdown" title="Welcome to fork!"&gt;project&lt;/a&gt;.&lt;/p&gt;
+      &lt;p&gt;A link to my &lt;a class="smd-ref-link" href="https://github.com/jakwings/strictdown" title="Welcome to fork!"&gt;project&lt;/a&gt;.&lt;/p&gt;
+      ~~~
+
+  Footnotes
+  ---------
+
+    Footnotes can easily be used in Strictdown. Just set a footnote marker `^`
+    followed by a reference name in a pair of square brackets and somewhere
+    else the footnote definition (which basically looks like a reference link
+      definition).
+
+    |Lazy syntax| is allowed in the footnote definition, but the following
+    lines must start with at least one space. Multiple footnote definitions can
+    be put together. The reference name is case-insensitive and can not contain
+    any linebreak or square bracket.
+
+    Input:
+
+      ~~~ strictdown
+      This is a sentence with a footnote^[1].
+
+      ^[1]: And here is the definition,
+            using lazy syntax.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;This is a sentence with a footnote&lt;a id="smd-ref-footnote-1" class="smd-ref-footnote" href="#smd-footnote-1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+      &lt;div id="smd-footnotes"&gt;
+        &lt;hr&gt;
+        &lt;table&gt;
+          &lt;tbody style="vertical-align:top;"&gt;
+            &lt;tr class="smd-footnote" id="smd-footnote-1"&gt;
+              &lt;td&gt;[1]&lt;/td&gt;
+              &lt;td&gt;And here is the definition. &lt;em&gt;&lt;a class="smd-footnote-backref" href="#smd-ref-footnote-1"&gt;&amp;#8617;&lt;/a&gt;&lt;/em&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+      ~~~
+
+    The footnote definition can contain any |block-level| element by leaving
+    optional spaces on the first line, then all following lines indented with
+    four spaces belong to the definition.
+
+    Input:
+
+      ~~~ **strictdown
+      &lt;pre class="lang-strictdown"&gt;This is a sentence with a footnote^\[fun\].
+
+      ^\[fun\]:
+      `    `This is a paragraph.
+
+      `    `This is another paragraph.&lt;/pre&gt;
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;This is a sentence with a footnote&lt;a id="smd-ref-footnote-1" class="smd-ref-footnote" href="#smd-footnote-1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+      &lt;div id="smd-footnotes"&gt;
+        &lt;hr&gt;
+        &lt;table&gt;
+          &lt;tbody style="vertical-align:top;"&gt;
+            &lt;tr class="smd-footnote" id="smd-footnote-1"&gt;
+              &lt;td&gt;[1]&lt;/td&gt;
+              &lt;td&gt;
+                &lt;p&gt;This is a paragraph.&lt;/p&gt;
+                &lt;p&gt;This is another paragraph.&lt;/p&gt;
+                &lt;p&gt;&lt;em&gt;&lt;a class="smd-footnote-backref" href="#smd-ref-footnote-1"&gt;&amp;#8617;&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+              &lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+      ~~~
+
+  Abbreviations
+  -------------
+
+    Abbreviations will work out of the box once you add an abbreviation
+    definition. So you can just write the text and add the definitions later
+    on.  Abbreviations are case-sensitive. The reference names of abbreviations
+    definitions can not contain any linebreak or square bracket.
+
+    Input:
+
+      ~~~ strictdown
+      Strictdown was used to write simple HTML documents easily.
+
+      *[HTML]: Hyper Text Markup Language
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;Strictdown was used to write simple &lt;abbr title="Hyper Text Markup Language"&gt;HTML&lt;/abbr&gt; documents easily.&lt;/p&gt;
+      ~~~
+
+  Anchors &amp; Inline References
+  ---------------------------
+
+    Any text can be marked up as an anchor by wrapping it by a pair of curly
+    brackets.  Then you can refer to it by the same text surrounded by a pipe.
+    The anchored text is case-insensitive. Spaces are not allowed at the inner
+    sides of the markers.
+
+    Input:
+
+      ~~~ strictdown
+      {A Title}
+      =========
+
+      A reference to |a title|.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;h2 id="smd-heading-1"&gt;&lt;a class="smd-anchor" id="smd-anchor-a-title"&gt;&lt;/a&gt;A Title&lt;/h2&gt;
+      &lt;p&gt;A reference to &lt;a class="smd-ref-anchor" href="#smd-anchor-a-title"&gt;a title&lt;/a&gt;.&lt;/p&gt;
+      ~~~
+
+  HTML Tags
+  ---------
+
+    Strictdown supports the insertion of valid raw HTML tags, including comment
+    tag "`&lt;!-- comment --&gt;`".  You can write openning tags or closing tags
+    without matched tags, since some HTML elements do not require closing tags.
+    But CDATA tag is not supported.
+
+    Input:
+
+      ~~~ strictdown
+      Roses are &lt;span style="color:red"&gt;red&lt;/span&gt; and &lt;em&gt;beautiful&lt;/em&gt;.&lt;!-- more --&gt;
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;Roses are &lt;span style="color:red"&gt;red&lt;/span&gt; and &lt;em&gt;beautiful&lt;/em&gt;.&lt;!-- more --&gt;&lt;/p&gt;
+      ~~~
+
+  Character References
+  --------------------
+
+    Strictdown also supports [character reference]:[] in the HTML way.
+
+      :[character reference]: https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references#Character_entity_references_in_HTML
+
+    Input:
+
+      ~~~ strictdown
+      Copyright &amp;copy; 2014 Alice&amp;Bob (MIT Licensed)
+
+      Google&amp;trade; is a trademark.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;Copyright &amp;copy; 2014 Alice&amp;amp;Bob (MIT Licensed)&lt;/p&gt;
+      &lt;p&gt;Google&amp;trade; is a trademark.&lt;/p&gt;
+      ~~~
+
+  Advanced Reference Links
+  ------------------------
+
+    Reference links are far more powerful than normal reference |links| we have
+    seen just now.  If the reference name of the link (not link definitions!)
+    begins with `@`, `^`, or `*`, it can refer to the URL and optionally the
+    title of the definition of an image, a footnote, or an anchor respectively.
+
+    Input:
+
+      ~~~ strictdown
+      {Animals} are cute.
+
+      [A link to an image.]:[@cats]
+
+      [A link to a footnote.]:[^dogs]
+
+      [A link to the anchor above.]:[*animals]
+
+      @[cats]: http://example.com/cats.png "My lovely cats."
+
+      ^[dogs]: I like dogs.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;&lt;a class="smd-anchor" id="smd-anchor-animals"&gt;&lt;/a&gt;Animals are cute.&lt;/p&gt;
+      &lt;p&gt;&lt;a class="smd-ref-link" href="http://example.com/cats.png" title="My lovely cats."&gt;A link to an image.&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a class="smd-ref-link" href="#smd-footnote-1"&gt;A link to a footnote.&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a class="smd-ref-link" href="#smd-anchor-animals" title="animals"&gt;A link to the anchor above.&lt;/a&gt;&lt;/p&gt;
+      &lt;div id="smd-footnotes"&gt;
+        &lt;hr&gt;
+        &lt;table&gt;
+          &lt;tbody style="vertical-align:top;"&gt;
+            &lt;tr class="smd-footnote" id="smd-footnote-1"&gt;
+              &lt;td&gt;[1]&lt;/td&gt;
+              &lt;td&gt;I like dogs.&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+      ~~~
+
+  Automatic Links
+  ---------------
+
+    Automatic links are very similar to reference links, and they are created
+    by writing an URL, a reference name started with `@`, `^`, or `:`, or an
+    email address in a pair of double square brackets. Spaces are not allowed
+    at the inner sides of the brackets.
+
+    Input:
+
+      ~~~ strictdown
+      [[https://github.com]]
+
+      [[@cats]]
+
+      [[:dogs]]
+
+      [[^Dogs]] gives a text linked to the footnote.
+
+      [[email@example.com]]
+
+      :[dogs]: http://example.com/dogs.png "My brave dogs."
+
+      @[cats]: http://example.com/cats.png "My lovely cats."
+
+      ^[dogs]: I like dogs.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;&lt;a class="smd-raw-link" href="https://github.com"&gt;https://github.com&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a class="smd-raw-link" href="http://example.com/cats.png" title="My lovely cats."&gt;http://example.com/cats.png&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a class="smd-raw-link" href="http://example.com/dogs.png" title="My brave dogs."&gt;http://example.com/dogs.png&lt;/a&gt;&lt;/p&gt;
+      &lt;p&gt;&lt;a class="smd-ref-link" href="#smd-footnote-1"&gt;Dogs&lt;/a&gt; gives a text linked to the footnote.&lt;/p&gt;
+      &lt;p&gt;&lt;a class="smd-mail-link" href="mailto:&amp;#101;&amp;#109;&amp;#97;&amp;#105;&amp;#108;&amp;#64;&amp;#101;&amp;#120;&amp;#97;&amp;#109;&amp;#112;&amp;#108;&amp;#101;&amp;#46;&amp;#99;&amp;#111;&amp;#109;"&gt;&amp;#101;&amp;#109;&amp;#97;&amp;#105;&amp;#108;&amp;#64;&amp;#101;&amp;#120;&amp;#97;&amp;#109;&amp;#112;&amp;#108;&amp;#101;&amp;#46;&amp;#99;&amp;#111;&amp;#109;&lt;/a&gt;&lt;/p&gt;
+      &lt;div id="smd-footnotes"&gt;
+        &lt;hr&gt;
+        &lt;table&gt;
+          &lt;tbody style="vertical-align:top;"&gt;
+            &lt;tr class="smd-footnote" id="smd-footnote-1"&gt;
+              &lt;td&gt;[1]&lt;/td&gt;
+              &lt;td&gt;I like dogs.&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+      ~~~
+
+
+Others
+======
+
+  Nested Span-level Elements
+  --------------------------
+
+    Span-level elements of different types can be nested. For example:
+
+    Input:
+
+      ~~~ strictdown
+      {[An anchor]:(https://github.com) with a link^[1]} is ok, too.
+
+      ^[1]: This is a reference to |an anchor with a link|.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;&lt;a class="smd-anchor" id="smd-anchor-an-anchor-with-a-link"&gt;&lt;/a&gt;&lt;a class="smd-ref-link" href="https://github.com"&gt;An anchor&lt;/a&gt; with a link&lt;a id="smd-ref-footnote-1" class="smd-ref-footnote" href="#smd-footnote-1"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; is ok, too.&lt;/p&gt;
+      &lt;div id="smd-footnotes"&gt;
+        &lt;hr&gt;
+        &lt;table&gt;
+          &lt;tbody style="vertical-align:top;"&gt;
+            &lt;tr class="smd-footnote" id="smd-footnote-1"&gt;
+              &lt;td&gt;[1]&lt;/td&gt;
+              &lt;td&gt;This is a reference to &lt;a class="smd-ref-anchor" href="#smd-anchor-an-anchor-with-a-link"&gt;an anchor with a link&lt;/a&gt;. &lt;em&gt;&lt;a class="smd-footnote-backref" href="#smd-ref-footnote-1"&gt;&amp;#8617;&lt;/a&gt;&lt;/em&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+      ~~~
+
+    When pattern-matching a reference name, all markers and non-printable text
+    will be filtered. So you can nest different elements more freely.
+
+  {Block Divider}
+  ---------------
+
+    The normal way to divide two blocks is to use blank lines -- empty lines or
+    lines that only have spaces.
+
+    But some elements of the same type of "image", "image definition",
+    "link defition", "footnote definition", "abbreviation definition",
+    "ordered or unordered list item", or "definition list item", can be put
+    together to have a compact style.
+
+    Due to the compact style of some elements introduced above, and the special
+    ways for some elements to contain |block-level| elements, Strictdown provide
+    the block divider for you to manually separate the elements.
+
+    Block divider consists of an caret in a single line, and is treated as
+    a block-level element, too.
+
+    Input:
+
+      ~~~ strictdown
+          a code block here
+
+      ^
+
+          another code block
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;pre&gt;a code block here&lt;/pre&gt;
+      &lt;pre&gt;another code block&lt;/pre&gt;
+      ~~~
+
+    Input:
+
+      ~~~ strictdown
+      * item one
+      * item two
+
+      ^
+
+      * item one
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;ul&gt;
+        &lt;li&gt;item one&lt;/li&gt;
+        &lt;li&gt;item two&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;ul&gt;
+        &lt;li&gt;item one&lt;/li&gt;
+      &lt;/ul&gt;
+      ~~~
+
+    Input:
+
+      ~~~ strictdown
+      term one
+      : definition one
+
+      term two
+      : definition two
+
+      ^
+
+      term one
+      : definition one
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;dl&gt;
+        &lt;dt&gt;term one&lt;/dt&gt;
+        &lt;dd&gt;definition one&lt;/dd&gt;
+        &lt;dt&gt;term two&lt;/dt&gt;
+        &lt;dd&gt;definition two&lt;/dd&gt;
+      &lt;/dl&gt;
+      &lt;dl&gt;
+        &lt;dt&gt;term one&lt;/dt&gt;
+        &lt;dd&gt;definition one&lt;/dd&gt;
+      &lt;/dl&gt;
+      ~~~
+
+    Input:
+
+      ~~~ strictdown
+      * a paragraph
+
+            a code block in an list item
+
+      ^
+
+          another code block
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;ul&gt;
+        &lt;li&gt;
+          &lt;p&gt;a paragraph&lt;/p&gt;
+          &lt;pre&gt;a code block in an list item&lt;/pre&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;pre&gt;another code block&lt;/pre&gt;
+      ~~~
+
+  Sub-indented Elements
+  ---------------------
+
+    Every |block-level| elements except simple code block can be indented with
+    at most three spaces, and the following elements can be indented based on
+    the new indentation level. This will not have any real effect on the result.
+
+    Input:
+
+      ~~~ strictdown
+      Here is some code:
+
+        ~~~ python
+        def foo():
+            print("Hello, world!")
+
+        foo()
+        ~~~
+
+      Python is easy to learn.
+      ~~~
+
+    Output:
+
+      ~~~ html
+      &lt;p&gt;Here is some code:&lt;/p&gt;
+      &lt;pre class="lang-python"&gt;def foo():
+          print(&amp;quot;Hello, world!&amp;quot;)
+
+      foo()&lt;/pre&gt;
+      &lt;p&gt;Python is easy to learn.&lt;/p&gt;
+      ~~~
+
+  Macros
+  ------
+
+    Macros have two uniforms: `&lt;[macro_name]&gt;` and `&lt;[macro_name parameters]&gt;`.
+
+    Macros are used to do some tricky jobs, they are special |block-level|
+    elements, and they can contain blanklines.  Currently there is only one
+    macro -- |table of contents|. If you dive into the source code of
+    strictdown.js, you can add your own macros.
+
+    Macros which do not have a valid macro name will be ignored and there will
+    be no output for them.</pre>
+  </div>
+  <script type="text/javascript">
+    var container = document.getElementById('main');
+    var input = document.getElementById('source');
+    var done = function (err, result) {
+      if (err) {
+        throw err;
+        container.innerHTML = err.message;
+        return;
+      }
+      container.innerHTML = result;
+      var blocks = [].slice.call(document.getElementsByTagName('pre'));
+      for (var i = 0, block; block = blocks[i]; i++) {
+        if (block.className !== 'lang-html') {
+          continue;
+        }
+        (function (block) {
+          var container = block.parentNode;
+          var temp = document.createElement('div');
+          temp.className = 'smd-preview clearfix';
+          temp.style.position = 'relative';
+          temp.innerHTML = block.textContent;
+          temp.onclick = function (evt) {
+            if (evt.target.nodeName === 'A') {
+              return;
+            }
+            container.replaceChild(block, temp);
+          };
+          block.onclick = function (evt) {
+            if (evt.target.nodeName === 'A') {
+              return;
+            }
+            container.replaceChild(temp, block);
+          };
+          container.replaceChild(temp, block);
+        })(block);
+      }
+    };
+    strictdown(input.textContent, {
+      xhtml: true,
+      headingBase: 2,
+      highlight: function (code, lang, raw, callback) {
+        if (raw) {
+          return callback ? callback(null, null) : null;
+        }
+        var res;
+        if (lang) {
+          try {
+            res = hljs.highlight(lang, code).value;
+            return callback ? callback(null, res) : res;
+          } catch (e) {}
+        }
+        res = hljs.highlightAuto(code).value;
+        return callback ? callback(null, res) : res;
+      }
+    }, done);
+  </script>
+  </body>
+</html>
