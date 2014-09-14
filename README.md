@@ -4,7 +4,7 @@ strictdown.js
 A Strictdown parser and compiler written in Javascript. Built for web browsers
 and Node.js&trade;.
 
-(Welcome to see my new design – [Kaj Markup Language](https://github.com/jakwings/Kaj-Markup-Language).)
+(Welcome to see my new design – :octocat: [Kaj Markup Language](https://github.com/jakwings/Kaj-Markup-Language).)
 
 
 About Strictdown
