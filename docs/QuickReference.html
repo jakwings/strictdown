@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Strictdown to HTML</title>
     <meta charset="utf-8">
+    <title>Quick Reference for Strictdown</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
+    <script src="strictdown.min.js"></script>
     <style>
       body {
         font-family: serif;
-        font-size: 14px;
+        font-size: 16px;
+        padding: 0;
+        margin: 0;
+        background: #ccc;
+      }
+      #main {
+        margin: auto;
+        max-width: 916px;
+        padding: 1em 0.5em;
+        border: 1px solid #eee;
         background: #f8f8f8;
       }
       table {
@@ -18,7 +30,22 @@
         padding: 5px;
       }
       h1 {
+        background: #432;
+        color: #f8f8f8;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 1px 0 2px #ddd;
+      }
+      h2 {
         border-bottom: 1px solid;
+      }
+      h3 {
+        background: #654;
+        color: #f8f8f8;
+        padding: 1px 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-shadow: 0 1px 0 2px #ddd;
       }
       a, a:link, a:hover, a:active {
         color: #24c;
@@ -26,30 +53,36 @@
       a:visited {
         color: #235;
       }
-      #smd-footnotes td, #smd-footnotes th {
-        border: none;
-      }
-      .left, .right {
-        width: 50%;
-      }
-      .left {
-        float: left;
-      }
-      .right {
-        float: right;
-      }
-      #input, #output {
-        width: 100%;
-        height: 200px;
-        padding: 0;
+      pre {
+        font-family: 'Courier New', Courier, Consolas, monospace;
+        overflow: auto;
         margin: 0;
-        overflow: scroll;
-        font-family: monospace;
-        resize: vertical;
       }
-      #preview {
-        border: 1px solid;
+      pre, .smd-preview {
+        background: #fff;
+        border: 1px solid #eee;
+        border-bottom: 1px solid #dfdfdf;
         padding: 5px;
+        border-left: 2px solid #333;
+        padding-left: 5px;
+        cursor: pointer;
+      }
+      .smd-preview pre {
+        background: initial;
+        border: initial;
+        padding: initial;
+        cursor: initial;
+      }
+      .smd-preview h1, .smd-preview h2, .smd-preview h3 {
+        background: initial;
+        color: initial;
+        padding: initial;
+        border: initial;
+        border-radius: initial;
+        box-shadow: initial;
+      }
+      .smd-footnote td, .smd-footnote th {
+        border: none;
       }
       .clearfix {
         *zoom: 1;
@@ -62,21 +95,12 @@
       .clearfix:after {
         clear: both;
       }
-      .smd-preview,
-      *:not(.smd-preview) > pre {
-        border-left: 2px solid #333;
-        padding-left: 5px;
-        overflow: auto;
-      }
-      .smd-preview h1 {
-        border: none;
-      }
     </style>
-    <script src="strictdown.min.js"></script>
   </head>
+
   <body>
-    <div class="left">
-      <textarea id="input" autofocus>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ * ~
+    <div id="main">
+<pre id="source">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ * ~
 &lt;h1 style="text-align:center"&gt;Quick Reference&lt;/h1&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -89,7 +113,7 @@ left click again to restore it.
 
 You can view the source text of this reference [here]:[source].
 
-  :[source]: https://github.com/jakwings/strictdown/blob/master/QuickReference.smd
+  :[source]: https://github.com/jakwings/strictdown/blob/master/docs/QuickReference.smd
 
 For syntax details, please see "[Strictdown Syntax]:(Syntax.html)".
 
@@ -1417,52 +1441,63 @@ Differences from Markdown
   * horizontal rules do not use underscores as markers
   * both emphasis and strong emphasis use only double chars as markers
   * emphasis uses "`__`" as markers
-  * |links| and |images| and their reference definitions have a new syntax</textarea>
-    </div>
-    <div class="right">
-      <textarea id="output"></textarea>
-    </div>
-    <div class="clearfix">
-      <input id="convert" type="button" value="Convert">
-      <div id="preview" class="clearfix"></div>
-    </div>
-    <script>
-      var doc = this.document;
-      var btn = doc.getElementById('convert');
-      var input = doc.getElementById('input');
-      btn.addEventListener('click', function () {
-        console.time('Total running time');
-        var tokens = strictdown.tokenize(input.value);
-        var others = {
-          links: tokens.links,
-          images: tokens.images,
-          abbrs: tokens.abbrs,
-          notes: tokens.notes,
-          headings: tokens.headings
-        };
-        var temp = tokens.slice(0);
-//strictdown.setOptions({headingBase: 2});
-        var output = strictdown.parse(tokens);
-        console.timeEnd('Total running time');
-        doc.getElementById('output').value = output;
-        doc.getElementById('preview').innerHTML = output;
-        console.log(others.abbrs);
-        console.table(others.links);
-        console.table(others.images);
-        console.table(others.notes);
-        console.table(others.headings);
-        console.table(temp);
-      }, false);
-      var clickEvent = document.createEvent('MouseEvents');
-      clickEvent.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
-      btn.dispatchEvent(clickEvent);
-      window.addEventListener('keypress', function (evt) {
-        if ((evt.keyCode === 13) && evt.ctrlKey) {
-          evt.preventDefault();
-          btn.dispatchEvent(clickEvent);
-          input.focus && input.focus();
+  * |links| and |images| and their reference definitions have a new syntax</pre>
+  </div>
+  <script type="text/javascript">
+    var container = document.getElementById('main');
+    var input = document.getElementById('source');
+    var done = function (err, result) {
+      if (err) {
+        throw err;
+        container.innerHTML = err.message;
+        return;
+      }
+      container.innerHTML = result;
+      var blocks = [].slice.call(document.getElementsByTagName('pre'));
+      for (var i = 0, block; block = blocks[i]; i++) {
+        if (block.className !== 'lang-html') {
+          continue;
         }
-      }, false);
-    </script>
+        (function (block) {
+          var container = block.parentNode;
+          var temp = document.createElement('div');
+          temp.className = 'smd-preview clearfix';
+          temp.style.position = 'relative';
+          temp.innerHTML = block.textContent;
+          temp.onclick = function (evt) {
+            if (evt.target.nodeName === 'A') {
+              return;
+            }
+            container.replaceChild(block, temp);
+          };
+          block.onclick = function (evt) {
+            if (evt.target.nodeName === 'A') {
+              return;
+            }
+            container.replaceChild(temp, block);
+          };
+          container.replaceChild(temp, block);
+        })(block);
+      }
+    };
+    strictdown(input.textContent, {
+      xhtml: true,
+      headingBase: 2,
+      highlight: function (code, lang, raw, callback) {
+        if (raw) {
+          return callback ? callback(null, null) : null;
+        }
+        var res;
+        if (lang) {
+          try {
+            res = hljs.highlight(lang, code).value;
+            return callback ? callback(null, res) : res;
+          } catch (e) {}
+        }
+        res = hljs.highlightAuto(code).value;
+        return callback ? callback(null, res) : res;
+      }
+    }, done);
+  </script>
   </body>
 </html>

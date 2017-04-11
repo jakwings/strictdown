@@ -27,11 +27,11 @@ their works.
 Now it is finished, but it may be still unstable. You can have a look at the
 [Quick Reference] first. [Full syntax] is available, too.
 
-Live demo: http://jakwings.github.io/strictdown/demo.html
+Live demo: https://jakwings.github.io/strictdown/demo.html
 
-[Quick Reference]: http://jakwings.github.io/strictdown/QuickReference.html
+[Quick Reference]: https://jakwings.github.io/strictdown/QuickReference.html
 
-[Full syntax]: http://jakwings.github.io/strictdown/Syntax.html
+[Full syntax]: https://jakwings.github.io/strictdown/Syntax.html
 
 **If you have any suggestion for the syntax, please submit an issue!**
 
@@ -95,7 +95,7 @@ Every `'\t'` will be replaced by 4 spaces for pedantic mode.
 
 Output correct closed tags for XHTML. The converter will not check and correct
 errors for you. Please follow the XHTML guidelines on your own:
-<http://www.w3.org/TR/xhtml1/#guidelines>
+<https://www.w3.org/TR/xhtml1/#guidelines>
 
 ### stylish: `true`
 
