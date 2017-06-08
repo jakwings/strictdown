@@ -494,7 +494,7 @@ Source Text Formatting
     Output:
 
       ~~~ html
-      <p>This is a <i>paragraph</i>.</p>
+      <p>This is a <em>paragraph</em>.</p>
       ~~~
 
     In fact, the closing fence is optional. If there is no closing fence for
@@ -1089,8 +1089,13 @@ Source Text Formatting
     Output:
 
       ~~~ html
-      <p>This is <i>emphasized</i>, and this is partial<i>ly</i> emphasized.</p>
+      <p>This is <em>emphasized</em>, and this is partial<em>ly</em> emphasized.</p>
       ~~~
+
+    If more than two consecutive underscores are used either at the start or at
+    the end, no emphasis will be added. In this case, please refer to |Literal
+    Text| for a better writing style (e.g. write `\`___\`` instead of `___` or
+    `\\_\\_\\_` if you want to show three underscores).
 
   Strong Emphasis
   ---------------
@@ -1107,8 +1112,13 @@ Source Text Formatting
     Output:
 
       ~~~ html
-      <p>This is <b>strongly</b> emphasized, and this is partial<b>ly</b> emphasized.</p>
+      <p>This is <strong>strongly</strong> emphasized, and this is partial<strong>ly</strong> emphasized.</p>
       ~~~
+
+    If more than two consecutive asterisks are used either at the start or at
+    the end, no emphasis will be added. In this case, please refer to |Literal
+    Text| for a better writing style (e.g. write `\`***\`` instead of `***` or
+    `\\*\\*\\*` if you want to show three asterisks).
 
   Deletions
   ---------
@@ -1128,8 +1138,11 @@ Source Text Formatting
       <p><del>This sentence is no longer true.</del> Please <del>trust</del> ignore it.</p>
       ~~~
 
-  Literal Text
-  ------------
+    If more than two consecutive tildes are used at the end, no effect will be
+    added. So please write `~~deleted text~~` instead of `~~deleted~~~~text~~`.
+
+  {Literal Text}
+  --------------
 
     If you don't want the special characters to take effects, just surround it
     by a backtick. Then only backticks or backslashes need to be escaped.
@@ -1143,7 +1156,7 @@ Source Text Formatting
     Output:
 
       ~~~ html
-      <p>This is <b>not</b> <span class="smd-literal">**bold**</span>.</p>
+      <p>This is <strong>not</strong> <span class="smd-literal">**bold**</span>.</p>
       ~~~
 
   Code Snippets

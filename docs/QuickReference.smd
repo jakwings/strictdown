@@ -310,7 +310,7 @@ Or try the [live demo]:(demo.html).
     Output:
 
       ~~~ html
-      <p>This is a <i>paragraph</i>.</p>
+      <p>This is a <em>paragraph</em>.</p>
       ~~~
 
   Horizontal Rules
@@ -738,7 +738,7 @@ Or try the [live demo]:(demo.html).
     Output:
 
       ~~~ html
-      <p>This is <i>emphasized</i>, and this is partial<i>ly</i> emphasized.</p>
+      <p>This is <em>emphasized</em>, and this is partial<em>ly</em> emphasized.</p>
       ~~~
 
   Strong Emphasis
@@ -756,7 +756,7 @@ Or try the [live demo]:(demo.html).
     Output:
 
       ~~~ html
-      <p>This is <b>strongly</b> emphasized, and this is partial<b>ly</b> emphasized.</p>
+      <p>This is <strong>strongly</strong> emphasized, and this is partial<strong>ly</strong> emphasized.</p>
       ~~~
 
   Deletions
@@ -791,7 +791,7 @@ Or try the [live demo]:(demo.html).
     Output:
 
       ~~~ html
-      <p>This is <b>not</b> <span class="smd-literal">**bold**</span>.</p>
+      <p>This is <strong>not</strong> <span class="smd-literal">**bold**</span>.</p>
       ~~~
 
   Linebreaks

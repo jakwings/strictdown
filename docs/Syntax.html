@@ -103,8 +103,8 @@
   </head>
 
   <body>
-    <div id="main">
-<pre id="source">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ * ~
+  <div id="main">
+  <pre id="source">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ * ~
 &lt;h1 style="text-align:center"&gt;Strictdown Syntax&lt;/h1&gt;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -600,7 +600,7 @@ Source Text Formatting
     Output:
 
       ~~~ html
-      &lt;p&gt;This is a &lt;i&gt;paragraph&lt;/i&gt;.&lt;/p&gt;
+      &lt;p&gt;This is a &lt;em&gt;paragraph&lt;/em&gt;.&lt;/p&gt;
       ~~~
 
     In fact, the closing fence is optional. If there is no closing fence for
@@ -1195,8 +1195,13 @@ Source Text Formatting
     Output:
 
       ~~~ html
-      &lt;p&gt;This is &lt;i&gt;emphasized&lt;/i&gt;, and this is partial&lt;i&gt;ly&lt;/i&gt; emphasized.&lt;/p&gt;
+      &lt;p&gt;This is &lt;em&gt;emphasized&lt;/em&gt;, and this is partial&lt;em&gt;ly&lt;/em&gt; emphasized.&lt;/p&gt;
       ~~~
+
+    If more than two consecutive underscores are used either at the start or at
+    the end, no emphasis will be added. In this case, please refer to |Literal
+    Text| for a better writing style (e.g. write `\`___\`` instead of `___` or
+    `\\_\\_\\_` if you want to show three underscores).
 
   Strong Emphasis
   ---------------
@@ -1213,8 +1218,13 @@ Source Text Formatting
     Output:
 
       ~~~ html
-      &lt;p&gt;This is &lt;b&gt;strongly&lt;/b&gt; emphasized, and this is partial&lt;b&gt;ly&lt;/b&gt; emphasized.&lt;/p&gt;
+      &lt;p&gt;This is &lt;strong&gt;strongly&lt;/strong&gt; emphasized, and this is partial&lt;strong&gt;ly&lt;/strong&gt; emphasized.&lt;/p&gt;
       ~~~
+
+    If more than two consecutive asterisks are used either at the start or at
+    the end, no emphasis will be added. In this case, please refer to |Literal
+    Text| for a better writing style (e.g. write `\`***\`` instead of `***` or
+    `\\*\\*\\*` if you want to show three asterisks).
 
   Deletions
   ---------
@@ -1234,8 +1244,11 @@ Source Text Formatting
       &lt;p&gt;&lt;del&gt;This sentence is no longer true.&lt;/del&gt; Please &lt;del&gt;trust&lt;/del&gt; ignore it.&lt;/p&gt;
       ~~~
 
-  Literal Text
-  ------------
+    If more than two consecutive tildes are used at the end, no effect will be
+    added. So please write `~~deleted text~~` instead of `~~deleted~~~~text~~`.
+
+  {Literal Text}
+  --------------
 
     If you don't want the special characters to take effects, just surround it
     by a backtick. Then only backticks or backslashes need to be escaped.
@@ -1249,7 +1262,7 @@ Source Text Formatting
     Output:
 
       ~~~ html
-      &lt;p&gt;This is &lt;b&gt;not&lt;/b&gt; &lt;span class="smd-literal"&gt;**bold**&lt;/span&gt;.&lt;/p&gt;
+      &lt;p&gt;This is &lt;strong&gt;not&lt;/strong&gt; &lt;span class="smd-literal"&gt;**bold**&lt;/span&gt;.&lt;/p&gt;
       ~~~
 
   Code Snippets
