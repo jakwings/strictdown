@@ -54,7 +54,7 @@ Simple usage:
 ``` javascript
 var strictdown = require('strictdown');
 strictdown('I am using __Strictdown__.');
-// Output: <p>I am using <i>Strictdown</i>.</p>
+// Output: <p>I am using <em>Strictdown</em>.</p>
 
 // Use custom options.
 strictdown(source, options);
