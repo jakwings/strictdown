@@ -39,7 +39,9 @@ var escape = function (text, alt) {
 };
 
 var quotemeta = function (str) {
-  return str.replace(/([.\\+*?\^\[\]$(){}])/g, '\\$1');
+  return str.replace(/[-\\.+*?^|$\[\](){}]/g, function (c) {
+    return '\\x' + c.charCodeAt(0).toString(16);
+  });
 };
 
 var reTrim = /^  *|(\\ )|  *$/gm;
