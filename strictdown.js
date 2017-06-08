@@ -46,8 +46,8 @@ var quotemeta = function (str) {
 
 var reTrim = /^  *|(\\ )|  *$/gm;
 
-var reEscape = /\\([-*+_.`~^":\[\]<>(){}|@&=#\\])/g;
-var reEscape2 = /\\([ \-*+_.`~^":\[\]<>(){}|@&=#\\])/g;
+var reEscape  = /\\([-*+_.`~^":\[\]<>(){}|@&=#\\])/g;
+var reEscape2 = /\\([-*+_.`~^":\[\]<>(){}|@&=#\\ ])/g;
 
 /**
  * merges multiple objects' properties and returns the object
