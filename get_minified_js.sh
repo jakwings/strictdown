@@ -13,4 +13,4 @@ curl -s "$API" \
     --data-urlencode "js_code@$INPUT" \
     -o "$OUTPUT"
 
-sed -i "1s/^\('use strict';\)\([^{]*\){/;\2{\1/" "$OUTPUT"
+sed -E -i "1s/^('use strict';)?([^{]*)\\{/;\2{'use strict';/" "$OUTPUT"
