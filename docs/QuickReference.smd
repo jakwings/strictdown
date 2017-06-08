@@ -1017,7 +1017,7 @@ Or try the [live demo]:(demo.html).
   ---------
 
     Strictdown supports the insertion of valid raw HTML tags, including comment
-    tag "`<!-- comment -->`".  You can write openning tags or closing tags
+    tag "`<!-- comment -->`".  You can write opening tags or closing tags
     without matched tags, since some HTML elements do not require closing tags.
     But CDATA tag is not supported.
 

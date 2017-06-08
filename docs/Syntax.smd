@@ -122,7 +122,7 @@ Source Text Formatting
     Normally |block-level| elements must be separated by {blank lines} -- lines
     that contain no character or just spaces. But some of the same type can be
     put together for a compact style. Under special circumstances blank lines
-    may be not enough to separate them, then you must use |block dividers|.
+    may be not enough to separate them, then you must use |block divider|s.
 
 
 {Block-level} Elements -- Structural Elements
@@ -403,7 +403,7 @@ Source Text Formatting
     not need to indent the content with spaces, but just surround the code with
     three or more tildes which are called fences. Fences must start at the
     first column, and the closing fence must have at least as many tildes as
-    the openning fence.  All blank lines between the fences will be preserved.
+    the opening fence.  All blank lines between the fences will be preserved.
 
     Input:
 
@@ -414,7 +414,7 @@ Source Text Formatting
       }
 
       Ending lines must have at least as
-      many tildes as the openning fence.
+      many tildes as the opening fence.
       ~~~
 
       // Empty lines are preserved.
@@ -430,7 +430,7 @@ Source Text Formatting
       }
 
       Ending lines must have at least as
-      many tildes as the openning fence.
+      many tildes as the opening fence.
       ~~~
 
       // Empty lines are preserved.
@@ -498,7 +498,7 @@ Source Text Formatting
       ~~~
 
     In fact, the closing fence is optional. If there is no closing fence for
-    the openning fence, all following lines in the same indentation level
+    the opening fence, all following lines in the same indentation level
     belong to the code block.
 
     Input:
@@ -1403,7 +1403,7 @@ Source Text Formatting
   ---------
 
     Strictdown supports the insertion of valid raw HTML tags, including comment
-    tag "`<!-- comment -->`".  You can write openning tags or closing tags
+    tag "`<!-- comment -->`".  You can write opening tags or closing tags
     without matched tags, since some HTML elements do not require closing tags.
     But CDATA tag is not supported.
 
