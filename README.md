@@ -4,7 +4,17 @@ strictdown.js
 A Strictdown parser and compiler written in Javascript. Built for web browsers
 and Node.js&trade;.
 
-(Welcome to see my new design – :octocat: [Kaj Markup Language](https://github.com/jakwings/Kaj-Markup-Language).)
+**Note: This project is currently not actively maintained.**
+
+**Some significant changes**:
+
+- Now emphasis and strong emphasis use `<em>` and `<strong>` instead of `<i>`
+  and `<b>`. This is good if you want to customize their styles of rendering.
+
+- The matching rules for emphasis, strong emphasis and deletion effect are
+  slightly changed. Please view the documentation for details.
+
+Welcome to see my new design – :octocat: [Kaj Markup Language](https://github.com/jakwings/Kaj-Markup-Language).
 
 
 About Strictdown
