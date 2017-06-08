@@ -1415,9 +1415,9 @@ BlockLexer.prototype.tokenize = function (blocks, indent,
 var reInline = {
   escape: /^\\([\s\S]?)/,
   verbatim: /^(``*)((?:\\`|[\s\S])+?)(\1`*)(?:\((?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)\))?/,
-  strong: /^(\*\**)(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)(\*\**)/,
-  em: /^(__*)(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)(__*)/,
-  del: /^(~~*)(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)(~~*)/,
+  strong: /^(\*\**)([ \n]*)((?:\\[\s\S]|[^\\])+?)([ \n]*)(\*\**)/,
+  em: /^(__*)([ \n]*)((?:\\[\s\S]|[^\\])+?)([ \n]*)(__*)/,
+  del: /^(~~*)([ \n]*)((?:\\[\s\S]|[^\\])+?)([ \n]*)(~~*)/,
   ref: /^\|(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)\|/,
   anchor: /^\{(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)\}/,
   autolink: /^\[\[(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)\]\]/,
@@ -1570,9 +1570,9 @@ InlineLexer.prototype.translate = function (src, inParagraph, alt) {
         case 'em':
         case 'del':
           if (matches = rule.exec(src)) {
-            if (matches[3] ||
+            if (matches[2] || matches[4] ||
                 (matches[1].length !== 2) ||
-                (matches[1].length !== matches[4].length)) {
+                (matches[1].length !== matches[5].length)) {
               src = src.substr(matches[1].length);
               chunk += matches[1];
               break;
@@ -1580,18 +1580,18 @@ InlineLexer.prototype.translate = function (src, inParagraph, alt) {
             src = src.substr(matches[0].length);
             if (alt) {
               chunk = this.wrap(chunk, null, true);
-              chunk += this.translate(matches[2], null, true);
+              chunk += this.translate(matches[3], null, true);
               res += chunk;
               chunk = '';
               continue OUTER_LOOP;
             }
             chunk = this.wrap(this.abbr(escape(chunk, true)), inParagraph);
             if (k === 'strong') {
-              chunk += '<strong>' + this.translate(matches[2]) + '</strong>';
+              chunk += '<strong>' + this.translate(matches[3]) + '</strong>';
             } else if (k === 'em') {
-              chunk += '<em>' + this.translate(matches[2]) + '</em>';
+              chunk += '<em>' + this.translate(matches[3]) + '</em>';
             } else {
-              chunk += '<del>' + this.translate(matches[2]) + '</del>';
+              chunk += '<del>' + this.translate(matches[3]) + '</del>';
             }
             res += chunk;
             chunk = '';
