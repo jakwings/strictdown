@@ -1415,9 +1415,9 @@ BlockLexer.prototype.tokenize = function (blocks, indent,
 var reInline = {
   escape: /^\\([\s\S]?)/,
   verbatim: /^(``*)((?:\\`|[\s\S])+?)(\1`*)(?:\((?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)\))?/,
-  strong: /^(\*\*\**)(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)(\*\*\**)/,
-  em: /^(___*)(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)(___*)/,
-  del: /^(~~~*)(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)(~~~*)/,
+  strong: /^(\*\**)(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)(\*\**)/,
+  em: /^(__*)(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)(__*)/,
+  del: /^(~~*)(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)(~~*)/,
   ref: /^\|(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)\|/,
   anchor: /^\{(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)\}/,
   autolink: /^\[\[(?![ \n])((?:\\[\s\S]|[^\\])+?)([ \n]*)\]\]/,
@@ -1571,8 +1571,10 @@ InlineLexer.prototype.translate = function (src, inParagraph, alt) {
         case 'del':
           if (matches = rule.exec(src)) {
             if (matches[3] ||
-                (matches[1].length > 2) ||
+                (matches[1].length !== 2) ||
                 (matches[1].length !== matches[4].length)) {
+              src = src.substr(matches[1].length);
+              chunk += matches[1];
               break;
             }
             src = src.substr(matches[0].length);
@@ -1619,6 +1621,8 @@ InlineLexer.prototype.translate = function (src, inParagraph, alt) {
               }
             }
             if (!isVerbatim) {
+              src = src.substr(matches[1].length);
+              chunk += matches[1];
               break;
             }
             if (matches[1].length !== 1) {
