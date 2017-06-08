@@ -1587,9 +1587,9 @@ InlineLexer.prototype.translate = function (src, inParagraph, alt) {
             }
             chunk = this.wrap(this.abbr(escape(chunk, true)), inParagraph);
             if (k === 'strong') {
-              chunk += '<b>' + this.translate(matches[2]) + '</b>';
+              chunk += '<strong>' + this.translate(matches[2]) + '</strong>';
             } else if (k === 'em') {
-              chunk += '<i>' + this.translate(matches[2]) + '</i>';
+              chunk += '<em>' + this.translate(matches[2]) + '</em>';
             } else {
               chunk += '<del>' + this.translate(matches[2]) + '</del>';
             }
